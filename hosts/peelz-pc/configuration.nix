@@ -144,6 +144,10 @@ in {
     layout = "ca(multi)";
     videoDrivers = [ "nvidia" ];
 
+    screenSection = ''
+      Option "metamodes" "DP-4: 3440x1440_120 +2560+0, DP-2: 2560x1440_120 +0+0"
+    '';
+
     displayManager.lightdm.enable = true;
 
     displayManager.sessionCommands = ''
