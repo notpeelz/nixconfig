@@ -71,7 +71,9 @@
   '';
 
   # Session variables
-  # home.sessionVariables.MY_VAR = 1;
+  home.sessionVariables = {
+    __GL_SYNC_TO_VBLANK = 0;
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
