@@ -46,6 +46,9 @@ in {
     };
   };
 
+  # Set kernel version
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Setup volume mount points
   fileSystems."/mnt/echo" = {
     device = "/dev/disk/by-uuid/56362696362676E1";
