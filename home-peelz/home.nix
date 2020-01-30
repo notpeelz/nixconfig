@@ -36,6 +36,15 @@
     obs-studio
   ];
 
+  services.redshift = {
+    enable = true;
+    provider = "manual";
+    latitude = "45.50";
+    longitude = "-73.57";
+    temperature.day = 6500;
+    temperature.night = 3200;
+  };
+
   # Set default programs
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications =
