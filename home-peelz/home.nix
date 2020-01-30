@@ -26,6 +26,7 @@
     git curl wget jq
     unzip
     fortune
+    asciinema
     xclip
 
     # GUI programs
