@@ -33,7 +33,6 @@ in {
   # Hardware settings
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
-  hardware.acpilight.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -179,7 +178,7 @@ in {
   users.users.peelz = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "docker" "libvirtd" "video" ];
+    extraGroups = [ "wheel" "docker" "libvirtd" ];
     shell = pkgs.zsh;
     initialHashedPassword = secrets.hashedPasswords.peelz;
   };
