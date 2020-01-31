@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 let
   # This value determines the NixOS release with which your system is to be
@@ -115,6 +115,24 @@ in {
 
   # Enable zsh
   programs.zsh.enable = true;
+  nixpkgs.config.packageOverrides = pkgs: {
+    zsh =
+      let
+        forcedVersion = "5.7.1";
+      in pkgs.zsh.overrideAttrs (oldAttrs: rec {
+        version = lib.traceIf
+          (lib.versionOlder forcedVersion oldAttrs.version) "forcing outdated zsh version ${forcedVersion} -- patches have to be updated"
+          forcedVersion;
+        patches = builtins.map builtins.fetchurl [
+          { url = "https://github.com/LouisTakePILLz/zsh/commit/f016535cb6fd466207d16770d3dcedfafc1799e9.patch";
+            sha256 = "06r6qpmsnwv0my44pim8vx311byf2h35y9xg3gpcchkxrhfngnws";
+          }
+          { url = "https://github.com/LouisTakePILLz/zsh/commit/f5bf5a014675d3b8ff5c1da9f4de42363f0ba2aa.patch";
+            sha256 = "0cfpnp2y4izzqlsylia2h8y2bgi8yarwjp59kmx6bcvd2vvv5bcx";
+          }
+        ];
+      });
+  };
 
   # Set vim as default editor
   programs.vim.defaultEditor = true;
