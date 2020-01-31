@@ -35,6 +35,7 @@
     pavucontrol
     shutter
     obs-studio
+    steam
   ];
 
   services.redshift = {

@@ -34,6 +34,9 @@ in {
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = true;
 
+  # Enable direct rendering for 32-bit applications (steam, wine, etc.)
+  hardware.opengl.driSupport32Bit = true;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     efi.canTouchEfiVariables = true;
