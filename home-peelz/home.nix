@@ -35,7 +35,10 @@
     pavucontrol
     shutter
     obs-studio
+
+    # Games
     steam
+    multimc
   ];
 
   services.redshift = {
