@@ -32,6 +32,7 @@
     # GUI programs
     chromium
     discord
+    hexchat
     pavucontrol
     shutter
     obs-studio
