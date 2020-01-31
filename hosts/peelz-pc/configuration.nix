@@ -97,6 +97,8 @@ in {
     curl wget
     # System
     efibootmgr htop killall
+    # Nix utils
+    nix-index
     # General
     git stow jq vim neofetch
     binutils file unzip
