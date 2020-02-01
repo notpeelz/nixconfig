@@ -56,6 +56,18 @@ in {
     device = "/dev/disk/by-uuid/56362696362676E1";
     fsType = "ntfs";
   };
+  fileSystems."/mnt/charlie" = {
+    device = "/dev/disk/by-uuid/6EC886EBC886B0BF";
+    fsType = "ntfs";
+  };
+  fileSystems."/mnt/delta" = {
+    device = "/dev/disk/by-uuid/BC4080AD40807046";
+    fsType = "ntfs";
+  };
+  fileSystems."/mnt/hotel" = {
+    device = "/dev/disk/by-uuid/06804D92804D895F";
+    fsType = "ntfs";
+  };
   fileSystems."/mnt/games" = {
     device = "/dev/disk/by-uuid/1e20e85c-b692-411f-aab5-66c19ecb2bf5";
     fsType = "ext4";
