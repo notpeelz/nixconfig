@@ -35,6 +35,7 @@
     hexchat
     pavucontrol
     shutter
+    vlc
     obs-studio
 
     # Games
