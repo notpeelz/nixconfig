@@ -36,6 +36,7 @@
     pavucontrol
     shutter
     vlc
+    vscode
     obs-studio
 
     # Games
