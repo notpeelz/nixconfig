@@ -112,10 +112,13 @@ in {
     # Nix utils
     nix-index
     # General
-    git stow jq vim neofetch
+    git stow jq neofetch
     binutils file unzip
     # Editor
-    vim
+    (neovim.override {
+      viAlias = true;
+      vimAlias = true;
+    })
     # Text-based web browser
     w3m
   ];
@@ -148,8 +151,8 @@ in {
       });
   };
 
-  # Set vim as default editor
-  programs.vim.defaultEditor = true;
+  # Set neovim as default editor
+  environment.sessionVariables.EDITOR = "nvim";
 
   # Enable sudo
   security.sudo.enable = true;
