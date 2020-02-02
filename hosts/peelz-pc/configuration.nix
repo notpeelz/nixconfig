@@ -219,6 +219,9 @@ in {
     ];
   };
 
+  # Enable gnome dbus (required for enabling themes)
+  services.dbus.packages = with pkgs; [ gnome3.dconf ];
+
   # Users
   users.mutableUsers = false;
   users.users.peelz = {

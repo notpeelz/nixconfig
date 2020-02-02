@@ -45,6 +45,17 @@
     multimc
   ];
 
+  # Set GTK and Qt theme
+  gtk = {
+    enable = true;
+    theme.package = pkgs.arc-theme;
+    theme.name = "Arc-Dark";
+  };
+  qt = {
+    enable = true;
+    platformTheme = "gtk";
+  };
+
   # Enable Redshift for night time
   services.redshift = {
     enable = true;
