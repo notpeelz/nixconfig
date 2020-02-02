@@ -55,6 +55,17 @@
     temperature.night = 3200;
   };
 
+  # Set well-known directories
+  xdg.userDirs = {
+    enable = true;
+    desktop = "$HOME/desktop";
+    documents = "$HOME/documents";
+    download = "$HOME/downloads";
+    music = "$HOME/music";
+    pictures = "$HOME/pictures";
+    videos = "$HOME/videos";
+  };
+
   # Set default programs
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications =
