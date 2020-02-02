@@ -113,7 +113,7 @@ in {
     nix-index
     # General
     git stow jq neofetch
-    binutils file unzip
+    binutils file unzip p7zip
     # Editor
     (neovim.override {
       viAlias = true;
