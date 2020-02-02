@@ -37,6 +37,7 @@
     shutter
     vlc
     vscode
+    qbittorrent
     obs-studio
 
     # Games
@@ -44,6 +45,7 @@
     multimc
   ];
 
+  # Enable Redshift for night time
   services.redshift = {
     enable = true;
     provider = "manual";
@@ -58,6 +60,7 @@
   xdg.mimeApps.defaultApplications =
     let
       browser = [ "chromium.desktop" "firefox.desktop" ];
+      torrent = [ "qbittorrent.desktop" ];
     in
       {
         "text/html" = browser;
@@ -65,6 +68,8 @@
         "x-scheme-handler/https" = browser;
         "x-scheme-handler/about" = browser;
         "x-scheme-handler/unknown" = browser;
+        "application/x-bittorrent" = torrent;
+        "x-scheme-handler/magnet" = torrent;
       };
 
   # Set default terminal
