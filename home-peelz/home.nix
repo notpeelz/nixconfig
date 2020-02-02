@@ -67,6 +67,9 @@
         "x-scheme-handler/unknown" = browser;
       };
 
+  # Set default terminal
+  home.sessionVariables.TERMINAL = "urxvt";
+
   # X Session
   xsession.enable = true;
   xsession.initExtra = ''
@@ -77,10 +80,8 @@
     bspwm -c "$HOME/.bspwmrc"
   '';
 
-  # Session variables
-  home.sessionVariables = {
-    __GL_SYNC_TO_VBLANK = 0;
-  };
+  # Disable OpenGL 'Sync to VBlank'
+  home.sessionVariables.__GL_SYNC_TO_VBLANK = 0;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
