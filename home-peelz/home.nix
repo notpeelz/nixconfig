@@ -29,6 +29,9 @@
     asciinema
     xclip
 
+    # CLI programs
+    taskwarrior
+
     # GUI programs
     chromium
     discord
