@@ -98,7 +98,7 @@
       };
 
   # Set default terminal
-  home.sessionVariables.TERMINAL = "urxvt";
+  home.sessionVariables.TERMINAL = "kitty";
 
   # X Session
   xsession.enable = true;
