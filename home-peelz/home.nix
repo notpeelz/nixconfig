@@ -103,7 +103,16 @@
   # X Session
   xsession.enable = true;
   xsession.initExtra = ''
+    # Disable OpenGL 'Sync to VBlank'
+    nvidia-settings -a 'SyncToVBlank=0'
+
+    # Disable OpenGL 'Allow Flipping'
+    nvidia-settings -a 'AllowFlipping=0'
+
+    # Set keyboard layout
     setxkbmap "ca(multi)" &
+
+    # Set keyboard repeat delay/rate
     xset r rate 200 30 &
   '';
   xsession.windowManager.command = ''
