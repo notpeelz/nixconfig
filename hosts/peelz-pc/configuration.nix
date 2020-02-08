@@ -166,8 +166,14 @@ in {
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+    # Steam Remote Play
+    27036 27037
+  ];
+  networking.firewall.allowedUDPPorts = [
+    # Steam Remote Play
+    27031 27036
+  ];
 
   # Enable firewall.
   networking.firewall.enable = true;
