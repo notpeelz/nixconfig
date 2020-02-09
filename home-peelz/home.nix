@@ -16,7 +16,6 @@
     sxhkd
 
     # General programs
-    htop
     rxvt_unicode kitty
     tmux
     neovim

@@ -108,7 +108,7 @@ in {
     # Data transfer
     curl wget
     # System
-    efibootmgr htop killall
+    efibootmgr htop nvtop killall
     # Nix utils
     nix-index
     # General
