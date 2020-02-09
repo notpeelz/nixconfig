@@ -75,6 +75,10 @@ in {
 
   # Enable kvm
   virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.qemuPackage = pkgs.qemu_kvm;
+
+  # Enable dconf (required for virt-manager)
+  programs.dconf.enable = true;
 
   # Enable docker
   virtualisation.docker.enable = true;
@@ -105,20 +109,27 @@ in {
   environment.systemPackages = with pkgs; [
     # X11
     numlockx
-    # Data transfer
-    curl wget
+
     # System
     efibootmgr htop nvtop killall
+
     # Nix utils
     nix-index
+
     # General
+    curl wget
     git stow jq neofetch
     binutils file unzip p7zip
+
+    # Virtualization
+    virtmanager
+
     # Editor
     (neovim.override {
       viAlias = true;
       vimAlias = true;
     })
+
     # Text-based web browser
     w3m
   ];
