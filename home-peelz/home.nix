@@ -14,6 +14,7 @@
     # Desktop environment
     bspwm
     sxhkd
+    rofi
 
     # General programs
     rxvt_unicode kitty
