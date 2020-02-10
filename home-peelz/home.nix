@@ -28,7 +28,7 @@
     fortune
     asciinema
     direnv
-    xclip
+    xclip xorg.xwininfo
     imagemagick
 
     # CLI programs
