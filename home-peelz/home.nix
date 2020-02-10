@@ -100,6 +100,15 @@
   # Set default terminal
   home.sessionVariables.TERMINAL = "kitty";
 
+  # Map caps to hyper
+  home.keyboard.options = [ "caps:hyper" ];
+  #home.file.".Xmodmap".text = ''
+  #  clear lock
+  #  clear mod4
+  #  keycode 66 = Hyper_L
+  #  keycode 133 = Super_L
+  #'';
+
   # X Session
   xsession.enable = true;
   xsession.initExtra = ''
