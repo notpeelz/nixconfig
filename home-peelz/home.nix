@@ -29,6 +29,7 @@
     asciinema
     direnv
     xclip
+    imagemagick
 
     # CLI programs
     taskwarrior
