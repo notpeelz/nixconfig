@@ -27,6 +27,7 @@
     unzip
     fortune
     asciinema
+    direnv
     xclip
 
     # CLI programs
