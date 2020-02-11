@@ -39,6 +39,7 @@
     discord
     hexchat
     pavucontrol
+    gimp
     shutter
     vlc
     vscode
