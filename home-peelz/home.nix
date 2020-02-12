@@ -14,6 +14,7 @@
     # Desktop environment
     bspwm
     sxhkd
+    nitrogen
     rofi
 
     # General programs
