@@ -46,6 +46,7 @@
     vscode
     qbittorrent
     obs-studio
+    spectacle
 
     # Games
     steam
