@@ -119,7 +119,7 @@ in {
     # General
     curl wget
     git stow jq neofetch
-    binutils file unzip p7zip
+    binutils file unzip p7zip unrar
 
     # Virtualization
     virtmanager
