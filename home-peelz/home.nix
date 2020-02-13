@@ -34,6 +34,7 @@
 
     # CLI programs
     taskwarrior
+    ranger
 
     # GUI programs
     chromium
@@ -112,15 +113,17 @@
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications =
     let
-      browser = [ "chromium.desktop" "firefox.desktop" ];
+      file_browser = [ "ranger.desktop" ];
+      web_browser = [ "chromium.desktop" "firefox.desktop" ];
       torrent = [ "qbittorrent.desktop" ];
     in
       {
-        "text/html" = browser;
-        "x-scheme-handler/http" = browser;
-        "x-scheme-handler/https" = browser;
-        "x-scheme-handler/about" = browser;
-        "x-scheme-handler/unknown" = browser;
+        "inode/directory" = file_browser;
+        "text/html" = web_browser;
+        "x-scheme-handler/http" = web_browser;
+        "x-scheme-handler/https" = web_browser;
+        "x-scheme-handler/about" = web_browser;
+        "x-scheme-handler/unknown" = web_browser;
         "application/x-bittorrent" = torrent;
         "x-scheme-handler/magnet" = torrent;
       };
