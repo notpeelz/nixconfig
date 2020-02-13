@@ -111,7 +111,7 @@ in {
     numlockx
 
     # System
-    efibootmgr htop nvtop pstree killall
+    efibootmgr htop nvtop progress pstree killall
 
     # Nix utils
     nix-index
