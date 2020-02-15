@@ -50,7 +50,8 @@
     spectacle
 
     # Games
-    steam
+    # Fixes missing "Show game info" option; NixOS/nixpkgs#80184
+    (steam.override (self: { extraLibraries = pkgs: [ lsof ]; }))
     multimc
   ];
 
