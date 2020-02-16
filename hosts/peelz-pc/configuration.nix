@@ -37,11 +37,6 @@ in {
   # Enable direct rendering for 32-bit applications (steam, wine, etc.)
   hardware.opengl.driSupport32Bit = true;
 
-  # Give users access to the w10kvm partition
-  services.udev.extraRules = ''
-    SUBSYSTEM=="block", ENV{DM_VG_NAME}=="vgroot", ENV{DM_LV_NAME}=="w10kvm", MODE="0770", TAG+="uaccess"
-  '';
-
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     efi.canTouchEfiVariables = true;
