@@ -130,6 +130,7 @@ in {
     binutils file unzip p7zip unrar
 
     # Virtualization
+    OVMF
     virtmanager
 
     # Editor
