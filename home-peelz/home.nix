@@ -144,10 +144,10 @@
   xsession.enable = true;
   xsession.initExtra = ''
     # Disable OpenGL 'Sync to VBlank'
-    nvidia-settings -a 'SyncToVBlank=0'
+    nvidia-settings -a 'SyncToVBlank=0' &
 
     # Disable OpenGL 'Allow Flipping'
-    nvidia-settings -a 'AllowFlipping=0'
+    nvidia-settings -a 'AllowFlipping=0' &
 
     # Set keyboard layout
     setxkbmap "ca(multi)" &
@@ -156,7 +156,10 @@
     xset r rate 200 30 &
 
     # Fix Overwatch (Lutris) detecting RCtrl instead of LCtrl
-    xmodmap -e "keycode 37 = Control_R NoSymbol Control_R"
+    xmodmap -e "keycode 37 = Control_R NoSymbol Control_R" &
+
+    # Restore wallpaper
+    nitrogen --restore &
   '';
   xsession.windowManager.command = ''
     bspwm -c "$HOME/.bspwmrc"
