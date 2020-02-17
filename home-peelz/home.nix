@@ -27,12 +27,14 @@
     git curl wget jq
     unzip
     fortune
-    asciinema
     direnv
-    xclip xorg.xwininfo
     imagemagick
+    xclip
+    xorg.xmodmap
+    xorg.xwininfo
 
     # CLI programs
+    asciinema
     taskwarrior
     ranger
 
@@ -50,6 +52,7 @@
     spectacle
 
     # Games
+    lutris
     # Fixes missing "Show game info" option; NixOS/nixpkgs#80184
     (steam.override (self: { extraLibraries = pkgs: [ lsof ]; }))
     multimc
@@ -136,12 +139,6 @@
 
   # Map caps to hyper
   home.keyboard.options = [ "caps:hyper" ];
-  #home.file.".Xmodmap".text = ''
-  #  clear lock
-  #  clear mod4
-  #  keycode 66 = Hyper_L
-  #  keycode 133 = Super_L
-  #'';
 
   # X Session
   xsession.enable = true;
@@ -157,6 +154,9 @@
 
     # Set keyboard repeat delay/rate
     xset r rate 200 30 &
+
+    # Fix Overwatch (Lutris) detecting RCtrl instead of LCtrl
+    xmodmap -e "keycode 37 = Control_R NoSymbol Control_R"
   '';
   xsession.windowManager.command = ''
     bspwm -c "$HOME/.bspwmrc"
