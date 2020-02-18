@@ -71,7 +71,7 @@ in {
     device = "/dev/disk/by-uuid/06804D92804D895F";
     fsType = "ntfs";
   };
-  fileSystems."/mnt/games" = {
+  fileSystems."/mnt/steam" = {
     device = "/dev/disk/by-uuid/1e20e85c-b692-411f-aab5-66c19ecb2bf5";
     fsType = "ext4";
   };
