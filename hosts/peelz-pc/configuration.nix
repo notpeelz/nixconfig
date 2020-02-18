@@ -75,6 +75,10 @@ in {
     device = "/dev/disk/by-uuid/1e20e85c-b692-411f-aab5-66c19ecb2bf5";
     fsType = "ext4";
   };
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/9df014e5-955d-4e3a-92b1-7750a4cd3ebc";
+    fsType = "ext4";
+  };
 
   # Enable kvm
   virtualisation.libvirtd.enable = true;
