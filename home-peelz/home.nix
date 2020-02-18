@@ -155,8 +155,21 @@
     # Restore wallpaper
     nitrogen --restore &
   '';
-  xsession.windowManager.command = ''
-    bspwm -c "$HOME/.bspwmrc"
+
+  xsession.windowManager.command = let
+    xidlehook = "${pkgs.xidlehook}/bin/xidlehook";
+    dm-tool = "${pkgs.lightdm}/bin/dm-tool";
+    bspwm = "${pkgs.bspwm}/bin/bspwm";
+  in ''
+    # Monitors turn off after 5 minutes;
+    # session will be locked 20 seconds after that if not woken up
+    ${xidlehook} \
+      --not-when-fullscreen \
+      --not-when-audio \
+      --timer primary 320 '${dm-tool} lock' \'\' &
+    xidlehook_PID="$!"
+    ${bspwm} -c "$HOME/.bspwmrc"
+    kill "$xidlehook_PID"
   '';
 
   # This value determines the Home Manager release that your
