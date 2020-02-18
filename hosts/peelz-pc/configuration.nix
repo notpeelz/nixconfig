@@ -201,7 +201,17 @@ in {
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio = {
+    enable = true;
+    daemon.config = {
+      high-priority = "yes";
+      # https://wiki.archlinux.org/index.php/Gaming#Using_higher_quality_remixing_for_better_sound
+      resample-method = "speex-float-10";
+      nice-level = -11;
+      realtime-scheduling = "yes";
+      realtime-priority = 5;
+    };
+  };
 
   # Enable the X11 windowing system.
   services.xserver = {
