@@ -58,6 +58,7 @@
     multimc
   ];
 
+  # FIXME: compton is deprecated and being replaced by picom with 20.03
   services.compton = {
     enable = true;
     backend = "glx";
