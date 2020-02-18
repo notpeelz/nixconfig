@@ -110,9 +110,6 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # X11
-    numlockx
-
     # System
     efibootmgr htop nvtop progress pstree killall
 
@@ -232,26 +229,29 @@ in {
 
     displayManager.setupCommands = let
       mouseName = "SINOWEALTH Wired Gaming Mouse";
+      numlockx = "${pkgs.numlockx}/bin/numlockx";
+      xinput = "${pkgs.xorg.xinput}/bin/xinput";
+      xset = "${pkgs.xorg.xset}/bin/xset";
     in ''
       # Enable numlock
-      numlockx on
+      ${numlockx} on
 
       # Enable autoscrolling
-      mouseId="$(xinput list "${mouseName}" --id-only 2>/dev/null | grep -oP '(?<=id=)\d+')"
-      xinput --set-prop "$mouseId" 'Evdev Wheel Emulation' 1
-      xinput --set-prop "$mouseId" 'Evdev Wheel Emulation Button' 2
-      xinput --set-prop "$mouseId" 'Evdev Wheel Emulation Axes' 6 7 4 5
-      xinput --set-prop "$mouseId" 'Evdev Wheel Emulation Inertia' 7
+      mouseId="$(${xinput} list "${mouseName}" --id-only 2>/dev/null | grep -oP '(?<=id=)\d+')"
+      ${xinput} --set-prop "$mouseId" 'Evdev Wheel Emulation' 1
+      ${xinput} --set-prop "$mouseId" 'Evdev Wheel Emulation Button' 2
+      ${xinput} --set-prop "$mouseId" 'Evdev Wheel Emulation Axes' 6 7 4 5
+      ${xinput} --set-prop "$mouseId" 'Evdev Wheel Emulation Inertia' 7
 
       # Disable mouse acceleration
-      xinput --set-prop "$mouseId" 'Device Accel Profile' -1
-      xset m 0 0
+      ${xinput} --set-prop "$mouseId" 'Device Accel Profile' -1
+      ${xset} m 0 0
 
       # Set keyboard repeat delay/rate
-      xset r rate 300 50
+      ${xset} r rate 300 50
 
       # Turn off monitors after 5 minutes of inactivity
-      xset s 300 300 -dpms
+      ${xset} s 300 300 -dpms
     '';
 
     desktopManager.default = "xsession";
