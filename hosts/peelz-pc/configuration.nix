@@ -249,6 +249,9 @@ in {
 
       # Set keyboard repeat delay/rate
       xset r rate 300 50
+
+      # Turn off monitors after 5 minutes of inactivity
+      xset s 300 300 -dpms
     '';
 
     desktopManager.default = "xsession";
