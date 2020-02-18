@@ -149,12 +149,6 @@
     # Disable OpenGL 'Allow Flipping'
     nvidia-settings -a 'AllowFlipping=0' &
 
-    # Set keyboard layout
-    setxkbmap "ca(multi)" &
-
-    # Set keyboard repeat delay/rate
-    xset r rate 200 30 &
-
     # Fix Overwatch (Lutris) detecting RCtrl instead of LCtrl
     xmodmap -e "keycode 37 = Control_R NoSymbol Control_R" &
 

@@ -206,6 +206,7 @@ in {
   services.xserver = {
     enable = true;
     layout = "ca(multi)";
+    xkbOptions = "caps:hyper";
     videoDrivers = [ "nvidia" ];
 
     screenSection = ''
@@ -215,19 +216,25 @@ in {
 
     displayManager.lightdm.enable = true;
 
-    displayManager.sessionCommands = let
+    displayManager.setupCommands = let
       mouseName = "SINOWEALTH Wired Gaming Mouse";
     in ''
-      numlockx on &
+      # Enable numlock
+      numlockx on
+
       # Enable autoscrolling
-      mouseId="$(xinput list "${mouseName}" --id-only 2>/dev/null|grep -oP '(?<=id=)\d+')"
+      mouseId="$(xinput list "${mouseName}" --id-only 2>/dev/null | grep -oP '(?<=id=)\d+')"
       xinput --set-prop "$mouseId" 'Evdev Wheel Emulation' 1
       xinput --set-prop "$mouseId" 'Evdev Wheel Emulation Button' 2
       xinput --set-prop "$mouseId" 'Evdev Wheel Emulation Axes' 6 7 4 5
       xinput --set-prop "$mouseId" 'Evdev Wheel Emulation Inertia' 7
+
       # Disable mouse acceleration
       xinput --set-prop "$mouseId" 'Device Accel Profile' -1
       xset m 0 0
+
+      # Set keyboard repeat delay/rate
+      xset r rate 300 50
     '';
 
     desktopManager.default = "xsession";
