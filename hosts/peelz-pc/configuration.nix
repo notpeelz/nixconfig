@@ -214,7 +214,21 @@ in {
       Option "metamodes" "DP-4: 3440x1440_120 +2560+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, DP-2: 2560x1440_120 +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
     '';
 
-    displayManager.lightdm.enable = true;
+    displayManager.lightdm = {
+      enable = true;
+      background = builtins.fetchurl {
+        url = https://i.imgur.com/QLntV2f.jpg;
+        sha256 = "1aznl543qicsa3y37wb1zgxzlrkngf5x2yrmz75w5a6hwbpvvd34";
+      };
+      greeters.gtk = {
+        enable = true;
+        indicators = [ "~clock" "~spacer" "~a11y" "~session" "~power"];
+        theme.package = pkgs.arc-theme;
+        theme.name = "Arc-Dark";
+        iconTheme.package = pkgs.arc-icon-theme;
+        iconTheme.name = "Arc";
+      };
+    };
 
     displayManager.setupCommands = let
       mouseName = "SINOWEALTH Wired Gaming Mouse";
@@ -239,6 +253,7 @@ in {
 
     desktopManager.default = "xsession";
     desktopManager.xterm.enable = false;
+    desktopManager.gnome3.enable = false;
     desktopManager.session = [
       {
         manager = "desktop";
