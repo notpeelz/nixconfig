@@ -60,12 +60,11 @@
     hexchat
     pavucontrol
     gimp
-    shutter
     vlc
     vscode
     qbittorrent
     obs-studio
-    spectacle
+    shutter spectacle peek
 
     # Games
     lutris
