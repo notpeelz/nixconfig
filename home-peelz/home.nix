@@ -157,6 +157,8 @@
     nvidia-settings -a 'AllowFlipping=0' &
 
     # Fix Overwatch (Lutris) detecting RCtrl instead of LCtrl
+    # https://bugs.winehq.org/show_bug.cgi?id=45148
+    # Fixed in wine >=5.0_rc1 (2019-12-10)
     xmodmap -e "keycode 37 = Control_R NoSymbol Control_R" &
 
     # Restore wallpaper
