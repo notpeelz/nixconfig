@@ -58,9 +58,12 @@
     multimc
   ];
 
-  # FIXME: compton is deprecated and being replaced by picom with 20.03
+  # FIXME: compton is deprecated and being replaced by picom with NixOS 20.03
   services.compton = {
     enable = true;
+    package = pkgs.writeShellScriptBin "compton" ''
+      ${pkgs.compton}/bin/compton --dbus "$@"
+    '';
     backend = "glx";
     vSync = "false";
     fade = true;
