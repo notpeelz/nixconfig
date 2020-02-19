@@ -9,6 +9,22 @@
   manual.html.enable = false;
   manual.manpages.enable = false;
 
+  # Overlays
+  nixpkgs.overlays = [
+    (self: super: {
+      kitty = super.kitty.overrideAttrs (oldAttrs: {
+        patches = oldAttrs.patches ++ [
+          # https://github.com/kovidgoyal/kitty/issues/2341
+          # Fixes flipped mouse pointer on programs with mouse support
+          (builtins.fetchurl {
+            url = https://github.com/kovidgoyal/kitty/commit/b235f411b06f9ccf09a6bbfdf245f52f64ee24e5.patch;
+            sha256 = "13mn9rzyvxglsf8xjrdmsv1sj7lja73jb9hn0pvmacwgglpzi9vp";
+          })
+        ];
+      });
+    })
+  ];
+
   # Packages
   home.packages = with pkgs; [
     # Desktop environment
