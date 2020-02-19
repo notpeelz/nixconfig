@@ -1,4 +1,4 @@
-{ stateVersion, theme, iconTheme }:
+{ stateVersion, theme, iconTheme, cursorTheme }:
 { config, pkgs, ... }:
 
 {
@@ -94,6 +94,9 @@
     enable = true;
     platformTheme = "gtk";
   };
+
+  # Set cursor
+  xsession.pointerCursor = cursorTheme;
 
   # Enable Redshift for night time
   services.redshift = {

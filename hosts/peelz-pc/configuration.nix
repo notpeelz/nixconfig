@@ -18,6 +18,21 @@ let
   home-manager = builtins.fetchTarball {
     url = "https://github.com/rycee/home-manager/archive/release-${stateVersion}.tar.gz";
   };
+
+  # Theme
+  theme = {
+    package = pkgs.arc-theme;
+    name = "Arc-Dark";
+  };
+  iconTheme = {
+    package = pkgs.arc-icon-theme;
+    name = "Arc";
+  };
+  cursorTheme = {
+    package = pkgs.capitaine-cursors;
+    name = "capitaine-cursors";
+    size = 40;
+  };
 in {
   imports = [
     ./hardware-configuration.nix
@@ -234,10 +249,7 @@ in {
       greeters.gtk = {
         enable = true;
         indicators = [ "~clock" "~spacer" "~a11y" "~session" "~power"];
-        theme.package = pkgs.arc-theme;
-        theme.name = "Arc-Dark";
-        iconTheme.package = pkgs.arc-icon-theme;
-        iconTheme.name = "Arc";
+        inherit theme iconTheme cursorTheme;
       };
     };
 
@@ -299,5 +311,7 @@ in {
     initialHashedPassword = secrets.hashedPasswords.root;
   };
 
-  home-manager.users.peelz = (import ../../home-peelz/home.nix) { inherit stateVersion; };
+  home-manager.users.peelz = (import ../../home-peelz/home.nix) {
+    inherit stateVersion theme iconTheme cursorTheme;
+  };
 }
