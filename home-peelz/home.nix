@@ -1,4 +1,4 @@
-{ stateVersion }:
+{ stateVersion, theme, iconTheme }:
 { config, pkgs, ... }:
 
 {
@@ -85,10 +85,7 @@
   # Set GTK and Qt theme
   gtk = {
     enable = true;
-    theme.package = pkgs.arc-theme;
-    theme.name = "Arc-Dark";
-    iconTheme.package = pkgs.arc-icon-theme;
-    iconTheme.name = "Arc";
+    inherit theme iconTheme;
   };
   qt = {
     enable = true;
@@ -133,7 +130,13 @@
         "x-scheme-handler/unknown" = web_browser;
         "application/x-bittorrent" = torrent;
         "x-scheme-handler/magnet" = torrent;
+        #"image/png" = image;
+        #"image/jpg" = image;
       };
+
+  # Set default browser
+  home.sessionVariables.BROWSER = "chromium";
+  home.sessionVariables.BROWSER_INCOGNITO = "chromium --incognito";
 
   # Set default terminal
   home.sessionVariables.TERMINAL = "kitty";
@@ -169,7 +172,10 @@
       --not-when-audio \
       --timer primary 320 '${dm-tool} lock' \'\' &
     xidlehook_PID="$!"
+
+    # Start bspwm
     ${bspwm} -c "$HOME/.bspwmrc"
+
     kill "$xidlehook_PID"
   '';
 
