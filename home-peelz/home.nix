@@ -139,7 +139,7 @@
   xdg.mimeApps.defaultApplications =
     let
       file_browser = [ "ranger.desktop" ];
-      web_browser = [ "chromium.desktop" "firefox.desktop" ];
+      web_browser = [ "chromium-browser.desktop" ];
       torrent = [ "qbittorrent.desktop" ];
     in
       {
