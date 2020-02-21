@@ -64,7 +64,32 @@ in {
   };
 
   # Set kernel version
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_custom;
+
+  # Kernel modules
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+  ];
+
+  nixpkgs.overlays = [
+    (self: super: rec {
+      linuxPackages_latest = linuxPackages_custom;
+      linuxPackages_custom = super.linuxPackages_latest.extend (kSelf: kSuper: {
+        # NixOS 19.09: v4l2loopback 0.12.0 doesn't compile for Linux 5.x
+        v4l2loopback = kSuper.v4l2loopback.overrideAttrs (oldAttrs: rec {
+          version = "0.12.3";
+          name = "v4l2loopback-${version}-${kSuper.kernel.version}";
+          src = pkgs.fetchFromGitHub {
+            owner = "umlaeute";
+            repo = "v4l2loopback";
+            rev = "v${version}";
+            sha256 = "01wahmrh4iw27cfmypik6frapq14vn7m9shmj5g7cr1apz2523aq";
+          };
+        });
+      });
+    })
+  ];
+
 
   # Clean /tmp on boot
   boot.cleanTmpDir = true;
