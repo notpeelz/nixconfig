@@ -279,31 +279,33 @@ in {
     };
 
     displayManager.setupCommands = let
-      mouseName = "SINOWEALTH Wired Gaming Mouse";
       numlockx = "${pkgs.numlockx}/bin/numlockx";
-      xinput = "${pkgs.xorg.xinput}/bin/xinput";
       xset = "${pkgs.xorg.xset}/bin/xset";
     in ''
-      mouseName="${mouseName}"
-
       # Enable numlock
       ${numlockx} on
-
-      # Enable autoscrolling
-      ${xinput} --set-prop "$mouseName" 'Evdev Wheel Emulation' 1
-      ${xinput} --set-prop "$mouseName" 'Evdev Wheel Emulation Button' 2
-      ${xinput} --set-prop "$mouseName" 'Evdev Wheel Emulation Axes' 6 7 4 5
-      ${xinput} --set-prop "$mouseName" 'Evdev Wheel Emulation Inertia' 7
-
-      # Disable mouse acceleration
-      ${xinput} --set-prop "$mouseName" 'Device Accel Profile' -1
-      ${xset} m 0 0
 
       # Set keyboard repeat delay/rate
       ${xset} r rate 300 50
 
       # Turn off monitors after 5 minutes of inactivity
       ${xset} s 300 300 -dpms
+    '';
+
+    # Enable libinput
+    libinput.enable = true;
+
+    # Disable mouse acceleration
+    # Enable autoscrolling (middle mouse click)
+    config = ''
+      Section "InputClass"
+        Identifier "libinputConfiguration"
+        Driver "libinput"
+        MatchIsPointer "on"
+        Option "AccelProfile" "flat"
+        Option "ScrollMethod" "button"
+        Option "ScrollButton" "2"
+      EndSection
     '';
 
     desktopManager.default = "xsession";
