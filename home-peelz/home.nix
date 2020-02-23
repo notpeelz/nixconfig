@@ -65,6 +65,7 @@
     qbittorrent
     obs-studio
     shutter spectacle peek
+    screenkey
 
     # Games
     lutris
