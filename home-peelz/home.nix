@@ -66,6 +66,7 @@
     obs-studio
     shutter spectacle peek
     screenkey
+    wireshark
 
     # Games
     lutris
