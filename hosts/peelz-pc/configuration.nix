@@ -14,7 +14,14 @@ let
   # Load secrets
   secrets = import ../../data/load-secrets.nix;
 
-  # Declare download path for home-manager to avoid the need to have it as a channel
+  # This allows refering to packages from the unstable channel.
+  pkgs-unstable = (import (builtins.fetchTarball {
+    url = https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+  })) {
+    config = config.nixpkgs.config;
+  };
+
+  # Declare download path for home-manager to avoid the need to have it as a channel.
   home-manager = builtins.fetchTarball {
     url = "https://github.com/rycee/home-manager/archive/release-${stateVersion}.tar.gz";
   };
@@ -339,6 +346,6 @@ in {
   };
 
   home-manager.users.peelz = (import ../../home-peelz/home.nix) {
-    inherit stateVersion theme iconTheme cursorTheme;
+    inherit pkgs-unstable stateVersion theme iconTheme cursorTheme;
   };
 }
