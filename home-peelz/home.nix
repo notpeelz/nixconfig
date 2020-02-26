@@ -67,6 +67,7 @@
     shutter spectacle peek
     screenkey
     wireshark
+    qdirstat
 
     # Games
     lutris
