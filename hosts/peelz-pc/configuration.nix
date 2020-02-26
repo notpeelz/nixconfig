@@ -170,7 +170,8 @@ in {
     # General
     curl wget
     git stow jq neofetch
-    binutils file unzip p7zip unrar
+    binutils file tree
+    zip unzip p7zip unrar
 
     # Virtualization
     OVMF
