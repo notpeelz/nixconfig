@@ -68,6 +68,7 @@
     screenkey
     wireshark
     qdirstat
+    gnome3.gnome-system-monitor
 
     # Games
     lutris
