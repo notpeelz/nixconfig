@@ -41,7 +41,7 @@
     stow
     git curl wget jq
     unzip
-    hexdump
+    hexdump xxd
     fortune
     direnv
     imagemagick
