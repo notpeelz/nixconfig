@@ -68,6 +68,7 @@
     screenkey
     wireshark
     qdirstat
+    pkgs-unstable.bless
     gnome3.gnome-system-monitor
 
     # Games
