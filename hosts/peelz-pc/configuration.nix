@@ -251,13 +251,25 @@ in {
   sound.enable = true;
   hardware.pulseaudio = {
     enable = true;
+    support32Bit = true;
+    # https://nixos.wiki/wiki/PulseAudio
+    configFile = pkgs.runCommand "default.pa" {} ''
+      sed '
+        s/module-udev-detect$/module-udev-detect tsched=0/
+        s/^load-module module-suspend-on-idle$//
+      ' \
+      ${pkgs.pulseaudio}/etc/pulse/default.pa > $out
+    '';
     daemon.config = {
-      high-priority = "yes";
+      flat-volumes = "no";
       # https://wiki.archlinux.org/index.php/Gaming#Using_higher_quality_remixing_for_better_sound
+      # https://web.archive.org/web/20200228004644/https://forums.linuxmint.com/viewtopic.php?f=42&t=44862
+      high-priority = "yes";
       resample-method = "speex-float-10";
       nice-level = -11;
       realtime-scheduling = "yes";
-      realtime-priority = 5;
+      realtime-priority = 9;
+      rlimit-rtprio = 9;
     };
   };
 
