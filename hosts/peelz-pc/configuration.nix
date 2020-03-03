@@ -270,6 +270,7 @@ in {
       realtime-scheduling = "yes";
       realtime-priority = 9;
       rlimit-rtprio = 9;
+      default-fragment-size-msec = 5;
     };
   };
 
