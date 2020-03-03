@@ -12,8 +12,22 @@
   # Overlays
   nixpkgs.overlays = [
     (self: super: {
-      kitty = super.kitty.overrideAttrs (oldAttrs: {
-        patches = oldAttrs.patches ++ builtins.map builtins.fetchurl [
+      zsh = super.zsh.overrideAttrs ({ patches ? [], ... }: {
+        patches = patches ++ builtins.map builtins.fetchurl [
+          # Reduces artifacts when resizing the terminal
+          { url = "https://github.com/LouisTakePILLz/zsh/commit/f016535cb6fd466207d16770d3dcedfafc1799e9.patch";
+            sha256 = "06r6qpmsnwv0my44pim8vx311byf2h35y9xg3gpcchkxrhfngnws";
+          }
+          { url = "https://github.com/LouisTakePILLz/zsh/commit/f5bf5a014675d3b8ff5c1da9f4de42363f0ba2aa.patch";
+            sha256 = "0cfpnp2y4izzqlsylia2h8y2bgi8yarwjp59kmx6bcvd2vvv5bcx";
+          }
+        ];
+      });
+    })
+
+    (self: super: {
+      kitty = super.kitty.overrideAttrs ({ patches ? [], ... }: {
+        patches = patches ++ builtins.map builtins.fetchurl [
           # https://github.com/kovidgoyal/kitty/issues/2341
           # Fixes flipped mouse pointer on programs with mouse support
           { url = https://github.com/kovidgoyal/kitty/commit/b235f411b06f9ccf09a6bbfdf245f52f64ee24e5.patch;
@@ -34,6 +48,7 @@
 
     # General programs
     rxvt_unicode kitty
+    zsh
     tmux
     neovim
 
@@ -205,6 +220,12 @@
     ${bspwm} -c "$HOME/.bspwmrc"
 
     kill "$xidlehook_PID"
+  '';
+
+  # Replace bash with zsh
+  home.file.".bashrc".text = ''
+    # -*- mode: sh -*-
+    [[ "$-" == *i* ]] && exec "${pkgs.zsh}/bin/zsh"
   '';
 
   # This value determines the Home Manager release that your
