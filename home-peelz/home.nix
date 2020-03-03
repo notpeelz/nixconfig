@@ -46,17 +46,24 @@
     nitrogen
     rofi
 
-    # General programs
+    # Terminal
     rxvt_unicode kitty
     zsh
     tmux
-    neovim
+
+    # General programs
+    curl wget
+    git stow jq
+    hexdump xxd
+    binutils file tree
+    zip unzip p7zip unrar
+    htop nvtop progress pstree killall
+
+    # Nix utils
+    nix-index
 
     # Misc programs
     stow
-    git curl wget jq
-    unzip
-    hexdump xxd
     fortune
     direnv
     imagemagick
@@ -68,16 +75,19 @@
     asciinema
     taskwarrior
     ranger
+    (neovim.override {
+      viAlias = true;
+      vimAlias = true;
+    })
 
     # GUI programs
     chromium
-    discord
-    hexchat
     pavucontrol
     gimp
     vlc
     vscode
     qbittorrent
+    virtmanager
     obs-studio
     shutter spectacle peek
     screenkey
@@ -85,6 +95,10 @@
     qdirstat
     pkgs-unstable.bless
     gnome3.gnome-system-monitor
+
+    # Chat programs
+    hexchat
+    discord
 
     # Games
     lutris

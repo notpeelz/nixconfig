@@ -162,20 +162,21 @@ in {
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # System
-    efibootmgr htop nvtop progress pstree killall
+    efibootmgr
+
+    # Virtualization
+    OVMF
 
     # Nix utils
     nix-index
 
     # General
+    htop nvtop progress pstree killall
     curl wget
-    git stow jq neofetch
+    neofetch
+    git stow jq
     binutils file tree
     zip unzip p7zip unrar
-
-    # Virtualization
-    OVMF
-    virtmanager
 
     # Editor
     (neovim.override {
