@@ -100,6 +100,13 @@
     # Chat programs
     hexchat
     discord
+    #(import /home/peelz/git/betterdiscordctl { config = nixpkgs.config.config; })
+    (import (pkgs.fetchFromGitHub {
+      owner = "louistakepillz";
+      repo = "betterdiscordctl";
+      rev = "880140a1339a3ece1b1e1e8f12b616cd0333039b";
+      sha256 = "1p13xc8a54rb1xw2a20agmpx4h89g07m42pfzyk83qq7dnmb0qa8";
+    }) {})
 
     # Games
     lutris
