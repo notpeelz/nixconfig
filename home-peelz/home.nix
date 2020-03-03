@@ -43,6 +43,7 @@
     # Desktop environment
     bspwm
     sxhkd
+    polybar
     nitrogen
     rofi
 
