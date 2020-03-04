@@ -247,7 +247,7 @@
   # Replace bash with zsh
   home.file.".bashrc".text = ''
     # -*- mode: sh -*-
-    [[ "$-" == *i* ]] && exec "${pkgs.zsh}/bin/zsh"
+    [[ "$-" == *i* && -z "$IN_NIX_SHELL" ]] && exec "${pkgs.zsh}/bin/zsh"
   '';
 
   # This value determines the Home Manager release that your
