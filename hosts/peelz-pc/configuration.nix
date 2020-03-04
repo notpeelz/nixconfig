@@ -15,9 +15,9 @@ let
   secrets = import ../../data/load-secrets.nix;
 
   # This allows refering to packages from the unstable channel.
-  pkgs-unstable = (import (builtins.fetchTarball {
+  pkgs-unstable = import (builtins.fetchTarball {
     url = https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
-  })) {
+  }) {
     config = config.nixpkgs.config;
   };
 

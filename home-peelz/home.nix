@@ -26,7 +26,7 @@
     })
 
     (self: super: {
-      kitty = super.kitty.overrideAttrs ({ patches ? [], ... }: {
+      kitty = pkgs-unstable.kitty.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map builtins.fetchurl [
           # https://github.com/kovidgoyal/kitty/issues/2341
           # Fixes flipped mouse pointer on programs with mouse support
