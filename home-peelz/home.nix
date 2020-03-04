@@ -36,6 +36,10 @@
         ];
       });
     })
+
+    (self: super: {
+      nix-query-tree-viewer = pkgs-unstable.nix-query-tree-viewer;
+    })
   ];
 
   # Packages
@@ -96,6 +100,7 @@
     qdirstat
     pkgs-unstable.bless
     gnome3.gnome-system-monitor
+    nix-query-tree-viewer
 
     # Chat programs
     hexchat
