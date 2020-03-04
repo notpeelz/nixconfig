@@ -250,6 +250,9 @@
     [[ "$-" == *i* && -z "$IN_NIX_SHELL" ]] && exec "${pkgs.zsh}/bin/zsh"
   '';
 
+  # Change zsh dotfile directory
+  pam.sessionVariables.ZDOTDIR = "${config.home.homeDirectory}/.zsh";
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
