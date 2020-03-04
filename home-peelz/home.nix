@@ -198,11 +198,11 @@
       };
 
   # Set default browser
-  home.sessionVariables.BROWSER = "chromium";
-  home.sessionVariables.BROWSER_INCOGNITO = "chromium --incognito";
+  pam.sessionVariables.BROWSER = "chromium";
+  pam.sessionVariables.BROWSER_INCOGNITO = "chromium --incognito";
 
   # Set default terminal
-  home.sessionVariables.TERMINAL = "kitty";
+  pam.sessionVariables.TERMINAL = "kitty";
 
   # Map caps to hyper
   home.keyboard.options = [ "caps:hyper" ];
