@@ -76,7 +76,9 @@ in {
   # Kernel modules
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback
+    r8125
   ];
+  boot.kernelModules = [ "r8125" ];
 
   nixpkgs.overlays = [
     (self: super: rec {
@@ -93,6 +95,11 @@ in {
             sha256 = "01wahmrh4iw27cfmypik6frapq14vn7m9shmj5g7cr1apz2523aq";
           };
         });
+
+        r8125 = pkgs.callPackage (builtins.fetchurl {
+          url = https://raw.githubusercontent.com/louistakepillz/nixpkgs/8f43f0e4e8de346444bfd50e547e540dc8dee87f/pkgs/os-specific/linux/r8125/default.nix;
+          sha256 = "0gkcf8184aczaxp7vivb95rgbr8xz5m13bjfq6gl2q6864xxxjfb";
+        }) { kernel = kSuper.kernel; };
       });
     })
   ];
@@ -140,11 +147,10 @@ in {
   # Set hostname
   networking.hostName = "peelz-pc";
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
+  # Enable DHCP
   networking.useDHCP = false;
   networking.interfaces.enp5s0.useDHCP = true;
+  networking.interfaces.enp4s0.useDHCP = true;
 
   # networking.wireless.enable = true;
 
