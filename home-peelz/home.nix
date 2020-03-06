@@ -30,7 +30,7 @@
         patches = patches ++ builtins.map builtins.fetchurl [
           # https://github.com/kovidgoyal/kitty/issues/2341
           # Fixes flipped mouse pointer on programs with mouse support
-          { url = https://github.com/kovidgoyal/kitty/commit/b235f411b06f9ccf09a6bbfdf245f52f64ee24e5.patch;
+          { url = "https://github.com/kovidgoyal/kitty/commit/b235f411b06f9ccf09a6bbfdf245f52f64ee24e5.patch";
             sha256 = "13mn9rzyvxglsf8xjrdmsv1sj7lja73jb9hn0pvmacwgglpzi9vp";
           }
         ];

@@ -16,7 +16,7 @@ let
 
   # This allows refering to packages from the unstable channel.
   pkgs-unstable = import (builtins.fetchTarball {
-    url = https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz;
+    url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
   }) {
     config = config.nixpkgs.config;
   };
@@ -97,7 +97,7 @@ in {
         });
 
         r8125 = pkgs.callPackage (builtins.fetchurl {
-          url = https://raw.githubusercontent.com/louistakepillz/nixpkgs/8f43f0e4e8de346444bfd50e547e540dc8dee87f/pkgs/os-specific/linux/r8125/default.nix;
+          url = "https://raw.githubusercontent.com/louistakepillz/nixpkgs/8f43f0e4e8de346444bfd50e547e540dc8dee87f/pkgs/os-specific/linux/r8125/default.nix";
           sha256 = "0gkcf8184aczaxp7vivb95rgbr8xz5m13bjfq6gl2q6864xxxjfb";
         }) { kernel = kSuper.kernel; };
       });
@@ -276,7 +276,7 @@ in {
     displayManager.lightdm = {
       enable = true;
       background = builtins.fetchurl {
-        url = https://i.imgur.com/QLntV2f.jpg;
+        url = "https://i.imgur.com/QLntV2f.jpg";
         sha256 = "1aznl543qicsa3y37wb1zgxzlrkngf5x2yrmz75w5a6hwbpvvd34";
       };
       greeters.gtk = {
