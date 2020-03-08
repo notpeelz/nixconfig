@@ -39,6 +39,7 @@
 
     (self: super: {
       nix-query-tree-viewer = pkgs-unstable.nix-query-tree-viewer;
+      vulnix = pkgs-unstable.vulnix;
     })
   ];
 
@@ -66,6 +67,7 @@
 
     # Nix utils
     nix-index
+    vulnix
 
     # Misc programs
     stow
