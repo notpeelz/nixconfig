@@ -39,6 +39,7 @@
 
     (self: super: {
       nix-query-tree-viewer = pkgs-unstable.nix-query-tree-viewer;
+      bless = pkgs-unstable.bless;
       vulnix = pkgs-unstable.vulnix;
     })
   ];
@@ -100,7 +101,7 @@
     screenkey
     wireshark
     qdirstat
-    pkgs-unstable.bless
+    bless
     gnome3.gnome-system-monitor
     nix-query-tree-viewer
 
