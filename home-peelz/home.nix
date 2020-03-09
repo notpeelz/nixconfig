@@ -39,6 +39,19 @@
       });
     })
 
+    # bspwm
+    (self: super: {
+      bspwm = pkgs-unstable.bspwm.overrideAttrs ({ patches ? [], ... }: {
+        patches = patches ++ builtins.map builtins.fetchurl [
+          # Fixes windows not getting resized properly when ignoring fullscreen events
+          { url = "https://github.com/louistakepillz/bspwm/commit/e62d9fdfc9372cc03b27d6e03a6a60ca12008058.patch";
+            sha256 = "0pmf2pq5pzmf93md59daqqyf5cny86ln91zv5mwbm15ph96v3jrv";
+          }
+        ];
+      });
+      sxhkd = pkgs-unstable.sxhkd;
+    })
+
     # Unstable programs
     (self: super: {
       nix-query-tree-viewer = pkgs-unstable.nix-query-tree-viewer;
