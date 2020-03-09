@@ -11,20 +11,22 @@
 
   # Overlays
   nixpkgs.overlays = [
+    # zsh
     (self: super: {
       zsh = super.zsh.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map builtins.fetchurl [
           # Reduces artifacts when resizing the terminal
-          { url = "https://github.com/LouisTakePILLz/zsh/commit/f016535cb6fd466207d16770d3dcedfafc1799e9.patch";
+          { url = "https://github.com/louistakepillz/zsh/commit/f016535cb6fd466207d16770d3dcedfafc1799e9.patch";
             sha256 = "06r6qpmsnwv0my44pim8vx311byf2h35y9xg3gpcchkxrhfngnws";
           }
-          { url = "https://github.com/LouisTakePILLz/zsh/commit/f5bf5a014675d3b8ff5c1da9f4de42363f0ba2aa.patch";
+          { url = "https://github.com/louistakepillz/zsh/commit/f5bf5a014675d3b8ff5c1da9f4de42363f0ba2aa.patch";
             sha256 = "0cfpnp2y4izzqlsylia2h8y2bgi8yarwjp59kmx6bcvd2vvv5bcx";
           }
         ];
       });
     })
 
+    # kitty
     (self: super: {
       kitty = pkgs-unstable.kitty.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map builtins.fetchurl [
@@ -37,6 +39,7 @@
       });
     })
 
+    # Unstable programs
     (self: super: {
       nix-query-tree-viewer = pkgs-unstable.nix-query-tree-viewer;
       bless = pkgs-unstable.bless;
