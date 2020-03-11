@@ -120,6 +120,7 @@
     remmina
     bless
     gnome3.gnome-system-monitor
+    gnome3.file-roller
     nix-query-tree-viewer
 
     # Chat programs
