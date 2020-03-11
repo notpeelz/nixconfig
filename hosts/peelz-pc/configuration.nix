@@ -97,8 +97,8 @@ in {
         });
 
         r8125 = pkgs.callPackage (builtins.fetchurl {
-          url = "https://raw.githubusercontent.com/louistakepillz/nixpkgs/8f43f0e4e8de346444bfd50e547e540dc8dee87f/pkgs/os-specific/linux/r8125/default.nix";
-          sha256 = "0gkcf8184aczaxp7vivb95rgbr8xz5m13bjfq6gl2q6864xxxjfb";
+          url = "https://raw.githubusercontent.com/louistakepillz/nixpkgs/cedb58102ee2e317b6c5f7cf722e739a51738651/pkgs/os-specific/linux/r8125/default.nix";
+          sha256 = "1b11a2zawqcs6l73fbvrv94wgp355nb4hww62yamhzwbvg1mkbj7";
         }) { kernel = kSuper.kernel; };
       });
     })
