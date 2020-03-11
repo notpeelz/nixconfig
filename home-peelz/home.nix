@@ -117,6 +117,7 @@
     screenkey
     wireshark
     qdirstat
+    remmina
     bless
     gnome3.gnome-system-monitor
     nix-query-tree-viewer
