@@ -84,6 +84,7 @@
 
     # Nix utils
     nix-index
+    nixpkgs-review
     vulnix
 
     # Misc programs
