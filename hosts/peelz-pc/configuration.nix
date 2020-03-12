@@ -18,7 +18,7 @@ let
   pkgs-unstable = import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
   }) {
-    config = config.nixpkgs.config;
+    inherit (config.nixpkgs) config;
   };
 
   # Declare download path for home-manager to avoid the need to have it as a channel.
