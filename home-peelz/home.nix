@@ -86,6 +86,7 @@
     nix-index
     nixpkgs-review
     vulnix
+    nix-query-tree-viewer
 
     # Misc programs
     stow
@@ -122,7 +123,6 @@
     bless
     gnome3.gnome-system-monitor
     gnome3.file-roller
-    nix-query-tree-viewer
 
     # Chat programs
     hexchat
