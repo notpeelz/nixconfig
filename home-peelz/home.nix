@@ -39,6 +39,16 @@
       });
     })
 
+    # Neovim
+    (self: super: {
+      # Fix neovim's .desktop name showing up as "Neovim"
+      neovim = super.neovim.overrideAttrs({ buildCommand, ... }: {
+        buildCommand = builtins.replaceStrings
+          [ "Name=WrappedNeovim" ] [ "Name=Neovim" ]
+          buildCommand;
+      });
+    })
+
     # bspwm
     (self: super: {
       bspwm = pkgs-unstable.bspwm.overrideAttrs ({ patches ? [], ... }: {
@@ -55,6 +65,7 @@
     # Unstable programs
     (self: super: {
       inherit (pkgs-unstable)
+        neovim
         nix-query-tree-viewer
         bless
         vulnix;
