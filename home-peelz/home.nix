@@ -133,6 +133,9 @@
     qdirstat
     remmina
     bless
+
+    # Gnome utilities
+    gnome3.nautilus
     gnome3.gnome-system-monitor
     gnome3.file-roller
 
