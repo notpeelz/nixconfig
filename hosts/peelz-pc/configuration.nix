@@ -26,6 +26,9 @@ let
     url = "https://github.com/rycee/home-manager/archive/release-${stateVersion}.tar.gz";
   };
 
+  # Kernel version
+  linuxPackages = "linuxPackages_latest";
+
   # Theme
   theme = {
     package = pkgs.arc-theme;
@@ -83,7 +86,7 @@ in {
   nixpkgs.overlays = [
     (self: super: rec {
       linuxPackages_latest = linuxPackages_custom;
-      linuxPackages_custom = super.linuxPackages_latest.extend (kSelf: kSuper: {
+      linuxPackages_custom = super.${linuxPackages}.extend (kSelf: kSuper: {
         # NixOS 19.09: v4l2loopback 0.12.0 doesn't compile for Linux 5.x
         v4l2loopback = kSuper.v4l2loopback.overrideAttrs (oldAttrs: rec {
           version = "0.12.3";
@@ -96,10 +99,10 @@ in {
           };
         });
 
-        r8125 = pkgs.callPackage (builtins.fetchurl {
-          url = "https://raw.githubusercontent.com/louistakepillz/nixpkgs/cedb58102ee2e317b6c5f7cf722e739a51738651/pkgs/os-specific/linux/r8125/default.nix";
-          sha256 = "1b11a2zawqcs6l73fbvrv94wgp355nb4hww62yamhzwbvg1mkbj7";
-        }) { kernel = kSuper.kernel; };
+        # NixOS 19.09: Realtek r8125 network driver
+        r8125 = pkgs.callPackage pkgs-unstable.${linuxPackages}.r8125.override({
+          kernel = kSuper.kernel;
+        });
       });
     })
   ];
