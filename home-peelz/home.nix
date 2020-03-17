@@ -54,9 +54,10 @@
 
     # Unstable programs
     (self: super: {
-      nix-query-tree-viewer = pkgs-unstable.nix-query-tree-viewer;
-      bless = pkgs-unstable.bless;
-      vulnix = pkgs-unstable.vulnix;
+      inherit (pkgs-unstable)
+        nix-query-tree-viewer
+        bless
+        vulnix;
     })
   ];
 
