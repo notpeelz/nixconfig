@@ -336,6 +336,13 @@ in {
   # Enable gnome dbus (required for enabling themes)
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
 
+  # Fix Nautilus not being able to access GVFS paths
+  # https://github.com/mate-desktop/caja/issues/1161#issuecomment-468299230
+  services.gvfs.enable = true;
+  environment.variables.GIO_EXTRA_MODULES = [
+    "${pkgs.gnome3.gvfs}/lib/gio/modules"
+  ];
+
   # Users
   users.mutableUsers = false;
   users.users.peelz = {
