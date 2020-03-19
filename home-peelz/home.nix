@@ -159,6 +159,7 @@
     multimc
   ];
 
+  services.lorri.enable = true;
   programs.fzf.enable = true;
 
   # FIXME: compton is deprecated and being replaced by picom with NixOS 20.03
