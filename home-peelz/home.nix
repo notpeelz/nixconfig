@@ -11,6 +11,18 @@
 
   # Overlays
   nixpkgs.overlays = [
+    # Unstable programs
+    (self: super: {
+      inherit (pkgs-unstable)
+        kitty
+        bspwm
+        sxhkd
+        neovim
+        nix-query-tree-viewer
+        bless
+        vulnix;
+    })
+
     # zsh
     (self: super: {
       zsh = super.zsh.overrideAttrs ({ patches ? [], ... }: {
@@ -28,7 +40,7 @@
 
     # kitty
     (self: super: {
-      kitty = pkgs-unstable.kitty.overrideAttrs ({ patches ? [], ... }: {
+      kitty = super.kitty.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map builtins.fetchurl [
           # https://github.com/kovidgoyal/kitty/issues/2341
           # Fixes flipped mouse pointer on programs with mouse support
@@ -51,7 +63,7 @@
 
     # bspwm
     (self: super: {
-      bspwm = pkgs-unstable.bspwm.overrideAttrs ({ patches ? [], ... }: {
+      bspwm = super.bspwm.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map builtins.fetchurl [
           # Fixes windows not getting resized properly when ignoring fullscreen events
           { url = "https://github.com/louistakepillz/bspwm/commit/b605f09790bf6cbffdf2f7e8ff2570610fcea073.patch";
@@ -59,16 +71,6 @@
           }
         ];
       });
-      sxhkd = pkgs-unstable.sxhkd;
-    })
-
-    # Unstable programs
-    (self: super: {
-      inherit (pkgs-unstable)
-        neovim
-        nix-query-tree-viewer
-        bless
-        vulnix;
     })
   ];
 
