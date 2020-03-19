@@ -115,6 +115,8 @@
     asciinema
     taskwarrior
     ranger
+    trash-cli
+    (callPackage ../pkgs/rmtrash {})
     (neovim.override {
       viAlias = true;
       vimAlias = true;
