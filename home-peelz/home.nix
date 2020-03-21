@@ -1,7 +1,8 @@
 { stateVersion, pkgs-unstable, theme, iconTheme, cursorTheme }:
 { config, pkgs, ... }:
 
-{
+let inherit (pkgs) fetchpatch;
+in {
   # Allow non-free software.
   nixpkgs.config.allowUnfree = true;
 
@@ -26,7 +27,7 @@
     # zsh
     (self: super: {
       zsh = super.zsh.overrideAttrs ({ patches ? [], ... }: {
-        patches = patches ++ builtins.map builtins.fetchurl [
+        patches = patches ++ builtins.map fetchpatch [
           # Reduces artifacts when resizing the terminal
           { url = "https://github.com/louistakepillz/zsh/commit/f016535cb6fd466207d16770d3dcedfafc1799e9.patch";
             sha256 = "06r6qpmsnwv0my44pim8vx311byf2h35y9xg3gpcchkxrhfngnws";
@@ -41,7 +42,7 @@
     # kitty
     (self: super: {
       kitty = super.kitty.overrideAttrs ({ patches ? [], ... }: {
-        patches = patches ++ builtins.map builtins.fetchurl [
+        patches = patches ++ builtins.map fetchpatch [
           # https://github.com/kovidgoyal/kitty/issues/2341
           # Fixes flipped mouse pointer on programs with mouse support
           { url = "https://github.com/kovidgoyal/kitty/commit/b235f411b06f9ccf09a6bbfdf245f52f64ee24e5.patch";
@@ -64,7 +65,7 @@
     # bspwm
     (self: super: {
       bspwm = super.bspwm.overrideAttrs ({ patches ? [], ... }: {
-        patches = patches ++ builtins.map builtins.fetchurl [
+        patches = patches ++ builtins.map fetchpatch [
           # Fixes windows not getting resized properly when ignoring fullscreen events
           { url = "https://github.com/louistakepillz/bspwm/commit/b605f09790bf6cbffdf2f7e8ff2570610fcea073.patch";
             sha256 = "1zhb0jpgmrvgcz4rk4dck90nflhsvj0cqv0i8aqfmgg8vp98a2ia";
