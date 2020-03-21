@@ -99,6 +99,7 @@ in {
 
     # Nix utils
     nix-index
+    nix-du
     nixpkgs-review
     vulnix
     nix-query-tree-viewer
