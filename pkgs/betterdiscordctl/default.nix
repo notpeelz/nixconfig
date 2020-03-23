@@ -19,8 +19,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
-    mkdir -p $out/bin
-    cp betterdiscordctl $out/bin/
+    install -D betterdiscordctl $out/bin/betterdiscordctl
     wrapProgram $out/bin/betterdiscordctl --add-flags "--nix"
   '';
 }
