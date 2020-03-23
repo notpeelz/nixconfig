@@ -271,10 +271,14 @@ in {
     xkbOptions = "caps:hyper";
     videoDrivers = [ "nvidia" ];
 
-    screenSection = ''
-      Option "nvidiaXineramaInfoOrder" "DP-4"
-      Option "metamodes" "DP-4: 3440x1440_120 +2560+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, DP-2: 2560x1440_120 +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
-    '';
+    screenSection = lib.concatMapStrings (x: x + "\n") [
+      # Set primary display
+      ''Option "nvidiaXineramaInfoOrder" "DP-4"''
+      # Set display configuration
+      ''Option "metamodes" "DP-4: 3440x1440_120 +1440+560 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, DP-2: 2560x1440_120 +0+0 {rotation=right, ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"''
+      # Fix automatic DPI scaling when a display is rotated
+      ''Option "DPI" "108 x 107"''
+    ];
 
     displayManager.lightdm = {
       enable = true;
