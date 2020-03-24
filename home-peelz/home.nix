@@ -67,8 +67,8 @@ in {
       bspwm = super.bspwm.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map fetchpatch [
           # Fixes windows not getting resized properly when ignoring fullscreen events
-          { url = "https://github.com/louistakepillz/bspwm/commit/b605f09790bf6cbffdf2f7e8ff2570610fcea073.patch";
-            sha256 = "1zhb0jpgmrvgcz4rk4dck90nflhsvj0cqv0i8aqfmgg8vp98a2ia";
+          { url = "https://github.com/louistakepillz/bspwm/commit/538d6197532fcf8547548b68dac6b511de57232e.patch";
+            sha256 = "072q2pg31vn52hb3b4q9v0m7cqbf7ibhy8y6rpmp3pcmd1ddmwzj";
           }
         ];
       });
