@@ -95,7 +95,7 @@ in {
     hexdump xxd
     binutils file tree
     zip unzip p7zip unrar
-    htop nvtop progress pstree killall
+    htop nvtop progress psutils killall
 
     # Nix utils
     nix-index
