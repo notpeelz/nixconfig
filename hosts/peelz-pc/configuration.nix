@@ -26,9 +26,6 @@ let
     url = "https://github.com/rycee/home-manager/archive/release-${stateVersion}.tar.gz";
   };
 
-  # Kernel version
-  linuxPackages = "linuxPackages_latest";
-
   # Theme
   theme = {
     package = pkgs.arc-theme;
@@ -74,7 +71,39 @@ in {
   };
 
   # Set kernel version
-  boot.kernelPackages = pkgs.linuxPackages_custom;
+  boot.kernelPackages = let
+    kernel = pkgs.linux_latest;
+    # kernel = let
+    #   base = pkgs-unstable.linux_latest;
+    # in pkgs.linuxManualConfig {
+    #   inherit (pkgs) stdenv;
+    #   inherit (base) version src;
+    #   allowImportFromDerivation = false;
+    #   configfile = pkgs.linuxConfig {
+    #     makeTarget = "defconfig";
+    #     inherit (base) src;
+    #   };
+    # };
+
+    linuxPackages_base = pkgs.linuxPackagesFor kernel;
+
+    linuxPackages = linuxPackages_base.extend (lib.const (super: {
+      # NixOS 19.09: v4l2loopback 0.12.0 doesn't compile for Linux 5.x
+      v4l2loopback = super.v4l2loopback.overrideAttrs (oldAttrs: rec {
+        version = "0.12.3";
+        name = "v4l2loopback-${version}-${super.kernel.version}";
+        src = pkgs.fetchFromGitHub {
+          owner = "umlaeute";
+          repo = "v4l2loopback";
+          rev = "v${version}";
+          sha256 = "01wahmrh4iw27cfmypik6frapq14vn7m9shmj5g7cr1apz2523aq";
+        };
+      });
+
+      # NixOS 19.09: use the r8125 kmod package from unstable
+      r8125 = (pkgs-unstable.linuxPackagesFor kernel).r8125;
+    }));
+  in linuxPackages;
 
   # Kernel modules
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -82,30 +111,6 @@ in {
     r8125
   ];
   boot.kernelModules = [ "r8125" ];
-
-  nixpkgs.overlays = [
-    (self: super: rec {
-      linuxPackages_latest = linuxPackages_custom;
-      linuxPackages_custom = super.${linuxPackages}.extend (kSelf: kSuper: {
-        # NixOS 19.09: v4l2loopback 0.12.0 doesn't compile for Linux 5.x
-        v4l2loopback = kSuper.v4l2loopback.overrideAttrs (oldAttrs: rec {
-          version = "0.12.3";
-          name = "v4l2loopback-${version}-${kSuper.kernel.version}";
-          src = pkgs.fetchFromGitHub {
-            owner = "umlaeute";
-            repo = "v4l2loopback";
-            rev = "v${version}";
-            sha256 = "01wahmrh4iw27cfmypik6frapq14vn7m9shmj5g7cr1apz2523aq";
-          };
-        });
-
-        # NixOS 19.09: Realtek r8125 network driver
-        r8125 = pkgs.callPackage pkgs-unstable.${linuxPackages}.r8125.override({
-          kernel = kSuper.kernel;
-        });
-      });
-    })
-  ];
 
 
   # Clean /tmp on boot
