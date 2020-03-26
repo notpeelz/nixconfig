@@ -87,7 +87,7 @@ in {
     # Terminal
     rxvt_unicode kitty
     zsh
-    tmux
+    tmux screen
 
     # General programs
     curl wget
