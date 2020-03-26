@@ -130,7 +130,7 @@ in {
     })
 
     # GUI programs
-    chromium
+    chromium firefox
     pavucontrol
     gimp
     vlc
