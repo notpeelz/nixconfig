@@ -110,6 +110,7 @@ in {
     fortune
     direnv
     imagemagick
+    playerctl
     xclip
     xorg.xmodmap
     xorg.xwininfo
