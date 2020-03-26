@@ -93,7 +93,7 @@ in {
     curl wget
     git stow jq
     hexdump xxd
-    binutils file tree
+    binutils file tree ag
     zip unzip p7zip unrar
     htop nvtop progress psutils killall
 
