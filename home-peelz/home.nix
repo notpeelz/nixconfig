@@ -110,6 +110,7 @@ in {
     fortune
     direnv
     imagemagick
+    xdg_utils
     playerctl
     xclip
     xorg.xmodmap
