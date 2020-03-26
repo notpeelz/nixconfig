@@ -112,7 +112,6 @@ in {
   ];
   boot.kernelModules = [ "r8125" ];
 
-
   # Clean /tmp on boot
   boot.cleanTmpDir = true;
 
@@ -364,6 +363,11 @@ in {
   users.users.root = {
     initialHashedPassword = secrets.hashedPasswords.root;
   };
+
+  # Nix store settings
+  nix.optimise.automatic = true;
+  nix.gc.automatic = true;
+  nix.gc.options = "--delete-older-than 8d";
 
   home-manager.users.peelz = (import ../../home-peelz/home.nix) {
     inherit pkgs-unstable stateVersion theme iconTheme cursorTheme;
