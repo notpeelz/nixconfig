@@ -106,6 +106,9 @@ in {
     nix-query-tree-viewer
 
     # Misc programs
+    wol
+    stress
+    rsync
     stow
     pandoc
     fortune
