@@ -107,6 +107,7 @@ in {
 
     # Misc programs
     stow
+    pandoc
     fortune
     direnv
     imagemagick
