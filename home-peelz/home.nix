@@ -121,6 +121,7 @@ in {
     asciinema
     taskwarrior
     ranger
+    bc
     trash-cli
     (callPackage ../pkgs/rmtrash {})
     (neovim.override {
