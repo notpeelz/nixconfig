@@ -13,7 +13,7 @@ in {
   # Overlays
   nixpkgs.overlays = [
     # Bleeding-edge packages
-    (self: super: {
+    (final: super: {
       inherit (pkgs-unstable)
         kitty
         bspwm
@@ -26,7 +26,7 @@ in {
     })
 
     # zsh
-    (self: super: {
+    (final: super: {
       zsh = super.zsh.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map fetchpatch [
           # Reduces artifacts when resizing the terminal
@@ -41,7 +41,7 @@ in {
     })
 
     # Neovim
-    (self: super: {
+    (final: super: {
       # Fix neovim's .desktop name showing up as "Neovim"
       neovim = super.neovim.overrideAttrs({ buildCommand, ... }: {
         buildCommand = builtins.replaceStrings
@@ -51,7 +51,7 @@ in {
     })
 
     # bspwm
-    (self: super: {
+    (final: super: {
       bspwm = super.bspwm.overrideAttrs ({ patches ? [], ... }: {
         patches = patches ++ builtins.map fetchpatch [
           # Fixes windows not getting resized properly when ignoring fullscreen events
