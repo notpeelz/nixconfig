@@ -268,6 +268,11 @@ in {
     };
   };
 
+  # Fix PS3 controller not getting picked up
+  services.udev.extraRules = ''
+    KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0268", MODE="0660", TAG+="uaccess", GROUP="input"
+  '';
+
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
