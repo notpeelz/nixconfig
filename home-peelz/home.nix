@@ -19,6 +19,7 @@ in {
         bspwm
         sxhkd
         neovim
+        rmtrash
         nix-query-tree-viewer
         bless
         vulnix;
@@ -126,7 +127,7 @@ in {
     ranger
     bc
     trash-cli
-    (callPackage ../pkgs/rmtrash {})
+    rmtrash
     (neovim.override {
       viAlias = true;
       vimAlias = true;
