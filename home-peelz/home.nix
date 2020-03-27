@@ -156,6 +156,15 @@ in {
     # Fixes missing "Show game info" option; NixOS/nixpkgs#80184
     (steam.override (self: { extraLibraries = pkgs: [ lsof ]; }))
     multimc
+
+    # Fonts
+    nerdfonts # FIXME: this package is MASSIVE
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
   ];
 
   services.lorri.enable = true;
