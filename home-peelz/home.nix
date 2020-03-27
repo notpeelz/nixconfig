@@ -12,7 +12,7 @@ in {
 
   # Overlays
   nixpkgs.overlays = [
-    # Unstable programs
+    # Bleeding-edge packages
     (self: super: {
       inherit (pkgs-unstable)
         kitty

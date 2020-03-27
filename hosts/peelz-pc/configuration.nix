@@ -59,7 +59,7 @@ in {
   # Enable direct rendering for 32-bit applications (steam, wine, etc.)
   hardware.opengl.driSupport32Bit = true;
 
-  # Use the systemd-boot EFI boot loader.
+  # Use GRUB bootloader
   boot.loader = {
     efi.canTouchEfiVariables = true;
     grub = {
