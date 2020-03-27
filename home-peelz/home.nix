@@ -150,6 +150,7 @@ in {
     bless
 
     # Gnome utilities
+    gnome3.gnome-calendar
     gnome3.gnome-calculator
     gnome3.nautilus
     gnome3.gnome-system-monitor
