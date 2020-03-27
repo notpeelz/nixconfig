@@ -107,6 +107,7 @@ in {
     xclip
     xorg.xmodmap
     xorg.xwininfo
+    xdotool
 
     # CLI programs
     asciinema
