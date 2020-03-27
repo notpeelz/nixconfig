@@ -97,6 +97,8 @@ in {
     wol
     stress
     rsync
+    nethogs
+    pv
     stow
     pandoc
     fortune
