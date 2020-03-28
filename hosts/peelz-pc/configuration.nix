@@ -14,10 +14,14 @@ let
   # Load secrets
   secrets = import ../../data/load-secrets.nix;
 
-  # This allows refering to packages from the unstable channel.
-  pkgs-unstable = import (builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
-  }) {
+  # This allows refering to packages from other channels.
+  channels = {
+    nixos-unstable = builtins.fetchTarball {
+      url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
+    };
+  };
+
+  pkgs-unstable = import channels.nixos-unstable {
     inherit (config.nixpkgs) config;
   };
 
@@ -44,7 +48,6 @@ in {
   imports = [
     ./hardware-configuration.nix
     ./persistence.nix
-    ../../modules
     "${home-manager}/nixos"
   ];
   system.stateVersion = stateVersion;
@@ -375,6 +378,6 @@ in {
   nix.gc.options = "--delete-older-than 8d";
 
   home-manager.users.peelz = (import ../../home-peelz/home.nix) {
-    inherit pkgs-unstable stateVersion theme iconTheme cursorTheme;
+    inherit channels stateVersion theme iconTheme cursorTheme;
   };
 }

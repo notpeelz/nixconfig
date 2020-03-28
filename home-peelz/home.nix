@@ -1,7 +1,18 @@
-{ stateVersion, pkgs-unstable, theme, iconTheme, cursorTheme }:
-{ config, pkgs, ... }:
+{ stateVersion, channels, theme, iconTheme, cursorTheme }:
+{ lib, config, pkgs, ... }:
 
-let inherit (pkgs) fetchpatch;
+with builtins;
+let
+  makeOverlays = overlayRoot: let
+    overlays = map
+      (name: import (overlayRoot + "/${name}"))
+      (attrNames (readDir overlayRoot));
+  in overlays;
+
+  pkgs-unstable = import channels.nixos-unstable {
+    inherit (config.nixpkgs) config;
+    overlays = makeOverlays ./overlays-unstable;
+  };
 in {
   # Allow non-free software.
   nixpkgs.config.allowUnfree = true;
@@ -11,69 +22,29 @@ in {
   manual.manpages.enable = false;
 
   # Overlays
-  nixpkgs.overlays = [
-    # Bleeding-edge packages
-    (final: super: {
-      inherit (pkgs-unstable)
-        kitty
-        bspwm
-        sxhkd
-        neovim
-        rmtrash
-        nix-query-tree-viewer
-        bless
-        vulnix;
-    })
-
-    # zsh
-    (final: super: {
-      zsh = super.zsh.overrideAttrs ({ patches ? [], ... }: {
-        patches = patches ++ builtins.map fetchpatch [
-          # Reduces artifacts when resizing the terminal
-          { url = "https://github.com/louistakepillz/zsh/commit/f016535cb6fd466207d16770d3dcedfafc1799e9.patch";
-            sha256 = "06r6qpmsnwv0my44pim8vx311byf2h35y9xg3gpcchkxrhfngnws";
-          }
-          { url = "https://github.com/louistakepillz/zsh/commit/f5bf5a014675d3b8ff5c1da9f4de42363f0ba2aa.patch";
-            sha256 = "0cfpnp2y4izzqlsylia2h8y2bgi8yarwjp59kmx6bcvd2vvv5bcx";
-          }
-        ];
-      });
-    })
-
-    # Neovim
-    (final: super: {
-      # Fix neovim's .desktop name showing up as "Neovim"
-      neovim = super.neovim.overrideAttrs({ buildCommand, ... }: {
-        buildCommand = builtins.replaceStrings
-          [ "Name=WrappedNeovim" ] [ "Name=Neovim" ]
-          buildCommand;
-      });
-    })
-
-    # bspwm
-    (final: super: {
-      bspwm = super.bspwm.overrideAttrs ({ patches ? [], ... }: {
-        patches = patches ++ builtins.map fetchpatch [
-          # Fixes windows not getting resized properly when ignoring fullscreen events
-          { url = "https://github.com/louistakepillz/bspwm/commit/538d6197532fcf8547548b68dac6b511de57232e.patch";
-            sha256 = "072q2pg31vn52hb3b4q9v0m7cqbf7ibhy8y6rpmp3pcmd1ddmwzj";
-          }
-        ];
-      });
-    })
-  ];
+  nixpkgs.overlays = lib.singleton (final: super: {
+    # Inject pkgs-unstable as a pseudo-package for the backports overlay
+    inherit pkgs-unstable;
+  }) ++ makeOverlays ./overlays;
 
   # Packages
-  home.packages = with pkgs; [
-    # Desktop environment
+  home.packages = (with pkgs-unstable; [
+    # Bleeding edge packages
+    kitty
     bspwm
     sxhkd
+    (neovim.override {
+      viAlias = true;
+      vimAlias = true;
+    })
+  ]) ++ (with pkgs; [
+    # Desktop environment
     polybar
     nitrogen
     rofi
 
     # Terminal
-    rxvt_unicode kitty
+    rxvt_unicode
     zsh
     tmux screen
 
@@ -118,10 +89,6 @@ in {
     bc
     trash-cli
     rmtrash
-    (neovim.override {
-      viAlias = true;
-      vimAlias = true;
-    })
 
     # GUI programs
     chromium firefox
@@ -148,8 +115,7 @@ in {
 
     # Chat programs
     hexchat
-    discord
-    (callPackage ../pkgs/betterdiscordctl {})
+    discord betterdiscordctl
 
     # Games
     lutris
@@ -165,7 +131,7 @@ in {
     liberation_ttf
     fira-code
     fira-code-symbols
-  ];
+  ]);
 
   services.lorri.enable = true;
   programs.fzf.enable = true;
@@ -233,24 +199,20 @@ in {
 
   # Set default programs
   xdg.mimeApps.enable = true;
-  xdg.mimeApps.defaultApplications =
-    let
-      file_browser = [ "ranger.desktop" ];
-      web_browser = [ "chromium-browser.desktop" ];
-      torrent = [ "qbittorrent.desktop" ];
-    in
-      {
-        "inode/directory" = file_browser;
-        "text/html" = web_browser;
-        "x-scheme-handler/http" = web_browser;
-        "x-scheme-handler/https" = web_browser;
-        "x-scheme-handler/about" = web_browser;
-        "x-scheme-handler/unknown" = web_browser;
-        "application/x-bittorrent" = torrent;
-        "x-scheme-handler/magnet" = torrent;
-        #"image/png" = image;
-        #"image/jpg" = image;
-      };
+  xdg.mimeApps.defaultApplications = let
+    file_browser = [ "ranger.desktop" ];
+    web_browser = [ "chromium-browser.desktop" ];
+    torrent = [ "qbittorrent.desktop" ];
+  in {
+    "inode/directory" = file_browser;
+    "text/html" = web_browser;
+    "x-scheme-handler/http" = web_browser;
+    "x-scheme-handler/https" = web_browser;
+    "x-scheme-handler/about" = web_browser;
+    "x-scheme-handler/unknown" = web_browser;
+    "application/x-bittorrent" = torrent;
+    "x-scheme-handler/magnet" = torrent;
+  };
 
   # Set default browser
   pam.sessionVariables.BROWSER = "chromium";
