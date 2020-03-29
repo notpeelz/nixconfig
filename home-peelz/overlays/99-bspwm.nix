@@ -6,6 +6,9 @@ final: super: {
       { url = "https://github.com/louistakepillz/bspwm/commit/538d6197532fcf8547548b68dac6b511de57232e.diff";
         sha256 = "09qkk0w21wdqg95mrvj7mg09gf2bxz1rh3rc51dzyj2wg4xq0q26";
       }
+      # Forces pseudo-tiled nodes to occupy all space in monocle mode
+      { url = "https://github.com/louistakepillz/bspwm/commit/b860de08859c9f87b85c22a7415a8eae7df8690e.diff";
+        sha256 = "1adz7wgg6p3p9hlcs17fn2c7sa3zhbagmq0yq63livrjdbbpy7ki";
       }
     ];
   });
