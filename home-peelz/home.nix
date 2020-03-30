@@ -89,6 +89,7 @@ in {
     bc
     trash-cli
     rmtrash
+    gdb
 
     # GUI programs
     chromium firefox
