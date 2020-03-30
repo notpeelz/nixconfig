@@ -11,6 +11,12 @@ let
   # should.
   stateVersion = "19.09";
 
+  makeOverlays = with builtins; overlayRoot:
+    let
+      overlays = map (name: import (overlayRoot + "/${name}"))
+        (attrNames (readDir overlayRoot));
+    in overlays;
+
   # Load secrets
   secrets = import ../../data/load-secrets.nix;
 
@@ -54,6 +60,12 @@ in {
 
   # Allow non-free software.
   nixpkgs.config.allowUnfree = true;
+
+  # Overlays
+  nixpkgs.overlays = lib.singleton (final: super: {
+    # Inject pkgs-unstable as a pseudo-package for the backports overlay
+    inherit pkgs-unstable;
+  }) ++ makeOverlays ./overlays;
 
   # Hardware settings
   hardware.cpu.amd.updateMicrocode = true;

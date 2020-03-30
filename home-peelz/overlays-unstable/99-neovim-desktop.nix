@@ -1,1 +1,1 @@
-../overlays/99-neovim-desktop.nix
+../../overlays/neovim-desktop.nix

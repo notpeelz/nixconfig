@@ -1,1 +1,1 @@
-../overlays/99-bspwm.nix
+../../overlays/bspwm.nix
