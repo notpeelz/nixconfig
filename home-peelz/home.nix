@@ -200,7 +200,7 @@ in {
   # Set default programs
   xdg.mimeApps.enable = true;
   xdg.mimeApps.defaultApplications = let
-    file_browser = [ "ranger.desktop" ];
+    file_browser = [ "org.gnome.Nautilus.desktop" ];
     web_browser = [ "chromium-browser.desktop" ];
     torrent = [ "qbittorrent.desktop" ];
   in {
