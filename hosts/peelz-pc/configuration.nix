@@ -377,7 +377,7 @@ in {
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 8d";
 
-  home-manager.users.peelz = (import ../../home-peelz/home.nix) {
+  home-manager.users.peelz = import ../../home-peelz/home.nix {
     inherit channels stateVersion theme iconTheme cursorTheme;
   };
 }

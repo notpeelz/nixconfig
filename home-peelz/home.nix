@@ -3,11 +3,11 @@
 
 with builtins;
 let
-  makeOverlays = overlayRoot: let
-    overlays = map
-      (name: import (overlayRoot + "/${name}"))
-      (attrNames (readDir overlayRoot));
-  in overlays;
+  makeOverlays = overlayRoot:
+    let
+      overlays = map (name: import (overlayRoot + "/${name}"))
+        (attrNames (readDir overlayRoot));
+    in overlays;
 
   pkgs-unstable = import channels.nixos-unstable {
     inherit (config.nixpkgs) config;
