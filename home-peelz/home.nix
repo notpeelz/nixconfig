@@ -1,4 +1,4 @@
-{ stateVersion, channels, theme, iconTheme, cursorTheme }:
+{ stateVersion, channelSources ? {}, theme ? {} }@args:
 { lib, config, pkgs, ... }:
 
 with builtins;
@@ -9,10 +9,32 @@ let
         (attrNames (readDir overlayRoot));
     in overlays;
 
-  pkgs-unstable = import channels.nixos-unstable {
+  channelSources = args.channelSources // {
+    nixos-unstable = builtins.fetchTarball {
+      url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
+    };
+  };
+
+  pkgs-unstable = import channelSources.nixos-unstable {
     inherit (config.nixpkgs) config;
     overlays = makeOverlays ./overlays-unstable;
   };
+
+  # Default theme (if not overridden by the host)
+  theme = {
+    theme = {
+      package = pkgs.arc-theme;
+      name = "Arc-Dark";
+    };
+    iconTheme = {
+      package = pkgs.arc-icon-theme;
+      name = "Arc";
+    };
+    cursorTheme = {
+      package = pkgs.capitaine-cursors;
+      name = "capitaine-cursors";
+    };
+  } // args.theme;
 in {
   # Allow non-free software.
   nixpkgs.config.allowUnfree = true;
@@ -168,7 +190,7 @@ in {
   # Set GTK and Qt theme
   gtk = {
     enable = true;
-    inherit theme iconTheme;
+    inherit (theme) theme iconTheme;
   };
   qt = {
     enable = true;
@@ -176,7 +198,7 @@ in {
   };
 
   # Set cursor
-  xsession.pointerCursor = cursorTheme;
+  xsession.pointerCursor = theme.cursorTheme;
 
   # Enable Redshift for night time
   services.redshift = {

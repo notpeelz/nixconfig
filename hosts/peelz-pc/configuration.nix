@@ -21,13 +21,13 @@ let
   secrets = import ../../data/load-secrets.nix;
 
   # This allows refering to packages from other channels.
-  channels = {
+  channelSources = {
     nixos-unstable = builtins.fetchTarball {
       url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
     };
   };
 
-  pkgs-unstable = import channels.nixos-unstable {
+  pkgs-unstable = import channelSources.nixos-unstable {
     inherit (config.nixpkgs) config;
   };
 
@@ -38,17 +38,19 @@ let
 
   # Theme
   theme = {
-    package = pkgs.arc-theme;
-    name = "Arc-Dark";
-  };
-  iconTheme = {
-    package = pkgs.arc-icon-theme;
-    name = "Arc";
-  };
-  cursorTheme = {
-    package = pkgs.capitaine-cursors;
-    name = "capitaine-cursors";
-    size = 40;
+    theme = {
+      package = pkgs.arc-theme;
+      name = "Arc-Dark";
+    };
+    iconTheme = {
+      package = pkgs.arc-icon-theme;
+      name = "Arc";
+    };
+    cursorTheme = {
+      package = pkgs.capitaine-cursors;
+      name = "capitaine-cursors";
+      size = 40;
+    };
   };
 in {
   imports = [
@@ -313,7 +315,7 @@ in {
       greeters.gtk = {
         enable = true;
         indicators = [ "~clock" "~spacer" "~a11y" "~session" "~power"];
-        inherit theme iconTheme cursorTheme;
+        inherit (theme) theme iconTheme cursorTheme;
       };
     };
 
@@ -384,12 +386,16 @@ in {
     initialHashedPassword = secrets.hashedPasswords.root;
   };
 
+  # User configurations
+  home-manager.users.peelz = import ../../home-peelz/home.nix {
+    inherit stateVersion channelSources;
+    theme = {
+      inherit (theme) cursorTheme;
+    };
+  };
+
   # Nix store settings
   nix.optimise.automatic = true;
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 8d";
-
-  home-manager.users.peelz = import ../../home-peelz/home.nix {
-    inherit channels stateVersion theme iconTheme cursorTheme;
-  };
 }
