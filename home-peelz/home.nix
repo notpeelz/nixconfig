@@ -59,6 +59,7 @@ in {
     # Nix utils
     nix-index
     nix-du
+    haskellPackages.niv # renamed to pkgs.niv on master
     nixfmt
     nixpkgs-review
     vulnix
