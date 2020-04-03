@@ -50,7 +50,7 @@ in {
 
     # General programs
     curl wget
-    git stow jq
+    git git-crypt stow jq
     hexdump xxd
     binutils file tree ag
     zip unzip p7zip unrar
