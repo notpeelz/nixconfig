@@ -25,42 +25,28 @@ let
     nixos-unstable = builtins.fetchTarball {
       url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
     };
+
+    home-manager = builtins.fetchTarball {
+      url = "https://github.com/rycee/home-manager/archive/release-${stateVersion}.tar.gz";
+    };
   };
 
   pkgs-unstable = import channelSources.nixos-unstable {
     inherit (config.nixpkgs) config;
   };
 
-  # Declare download path for home-manager to avoid the need to have it as a channel.
-  home-manager = builtins.fetchTarball {
-    url = "https://github.com/rycee/home-manager/archive/release-${stateVersion}.tar.gz";
-  };
-
-  # Theme
-  theme = {
-    theme = {
-      package = pkgs.arc-theme;
-      name = "Arc-Dark";
-    };
-    iconTheme = {
-      package = pkgs.arc-icon-theme;
-      name = "Arc";
-    };
-    cursorTheme = {
-      package = pkgs.capitaine-cursors;
-      name = "capitaine-cursors";
-      size = 40;
-    };
-  };
+  # Essential packages
+  essentials = import ../../common/essentials.nix pkgs;
 in {
   imports = [
     ./hardware-configuration.nix
     ./persistence.nix
-    "${home-manager}/nixos"
+    "${channelSources.home-manager}/nixos"
   ];
+
   system.stateVersion = stateVersion;
 
-  # Allow non-free software.
+  # Allow non-free software
   nixpkgs.config.allowUnfree = true;
 
   # Overlays
@@ -176,21 +162,18 @@ in {
   networking.interfaces.enp5s0.useDHCP = true;
   networking.interfaces.enp4s0.useDHCP = true;
 
-  # networking.wireless.enable = true;
-
-  # Select internationalisation properties.
+  # Internationalization properties
   i18n = {
     consoleFont = "Lat2-Terminus16";
     consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
 
-  # Set your time zone.
+  # Time zone
   time.timeZone = "America/Montreal";
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
+  # System packages
+  environment.systemPackages = essentials ++ (with pkgs; [
     # System
     efibootmgr
 
@@ -201,12 +184,7 @@ in {
     nix-index
 
     # General
-    htop nvtop progress pstree killall
-    curl wget
-    neofetch
-    git stow jq
-    binutils file tree
-    zip unzip p7zip unrar
+    nvtop progress
 
     # Editor
     (neovim.override {
@@ -216,7 +194,7 @@ in {
 
     # Text-based web browser
     w3m
-  ];
+  ]);
 
   # Disable x11-ssh-askpass
   # https://github.com/NixOS/nixpkgs/issues/24311#issuecomment-528652343
@@ -234,15 +212,7 @@ in {
   # Enable sudo
   security.sudo.enable = true;
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
+  # Open ports in the firewall
   networking.firewall.allowedTCPPorts = [
     # Steam Remote Play
     27036 27037
@@ -252,13 +222,13 @@ in {
     27031 27036
   ];
 
-  # Enable firewall.
+  # Enable firewall
   networking.firewall.enable = true;
 
-  # Enable CUPS to print documents.
+  # Enable CUPS to print documents
   services.printing.enable = true;
 
-  # Enable sound.
+  # Enable sound
   sound.enable = true;
   hardware.pulseaudio = {
     enable = true;
@@ -290,7 +260,7 @@ in {
     KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0268", MODE="0660", TAG+="uaccess", GROUP="input"
   '';
 
-  # Enable the X11 windowing system.
+  # Enable the X11 windowing system
   services.xserver = {
     enable = true;
     layout = "ca(multi)";
@@ -315,7 +285,19 @@ in {
       greeters.gtk = {
         enable = true;
         indicators = [ "~clock" "~spacer" "~a11y" "~session" "~power"];
-        inherit (theme) theme iconTheme cursorTheme;
+        theme = {
+          package = pkgs.arc-theme;
+          name = "Arc-Dark";
+        };
+        iconTheme = {
+          package = pkgs.arc-icon-theme;
+          name = "Arc";
+        };
+        cursorTheme = {
+          package = pkgs.capitaine-cursors;
+          name = "capitaine-cursors";
+          size = 40;
+        };
       };
     };
 
@@ -387,12 +369,28 @@ in {
   };
 
   # User configurations
-  home-manager.users.peelz = import ../../home-peelz/home.nix {
-    inherit stateVersion channelSources;
-    theme = {
-      inherit (theme) cursorTheme;
+  home-manager.users =
+    let
+      makeUser = path: overrides:
+        let
+          user = import path {
+            inherit stateVersion channelSources;
+          };
+        in lib.setFunctionArgs (args: (user args) // overrides)
+          (lib.functionArgs user);
+    in {
+      peelz = makeUser ../../home-peelz/home.nix ({
+        my.graphical.enable = true;
+        my.social.enable = true;
+        my.gaming.enable = true;
+        my.dev.enable = true;
+      } // (with config.services.xserver.displayManager.lightdm.greeters.gtk; {
+        # Copy theme settings from lightdm
+        gtk.theme = theme;
+        gtk.iconTheme = iconTheme;
+        xsession.pointerCursor = cursorTheme;
+      }));
     };
-  };
 
   # Nix store settings
   nix.optimise.automatic = true;
