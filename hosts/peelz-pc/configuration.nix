@@ -4,13 +4,8 @@
 
 { lib, config, pkgs, ... }:
 
+with lib;
 let
-  # This value determines the NixOS release with which your system is to be
-  # compatible, in order to avoid breaking some software such as database
-  # servers. You should change this only after NixOS release notes say you
-  # should.
-  stateVersion = "19.09";
-
   makeOverlays = with builtins; overlayRoot:
     let
       overlays = map (name: import (overlayRoot + "/${name}"))
@@ -27,7 +22,7 @@ let
     };
 
     home-manager = builtins.fetchTarball {
-      url = "https://github.com/rycee/home-manager/archive/release-${stateVersion}.tar.gz";
+      url = "https://github.com/rycee/home-manager/archive/release-19.09.tar.gz";
     };
   };
 
@@ -44,23 +39,20 @@ in {
     "${channelSources.home-manager}/nixos"
   ];
 
-  system.stateVersion = stateVersion;
+  # This value determines the NixOS release with which your system is to be
+  # compatible, in order to avoid breaking some software such as database
+  # servers. You should change this only after NixOS release notes say you
+  # should.
+  system.stateVersion = "19.09";
 
   # Allow non-free software
   nixpkgs.config.allowUnfree = true;
 
   # Overlays
-  nixpkgs.overlays = lib.singleton (final: super: {
+  nixpkgs.overlays = singleton (final: super: {
     # Inject pkgs-unstable as a pseudo-package for the backports overlay
     inherit pkgs-unstable;
   }) ++ makeOverlays ./overlays;
-
-  # Hardware settings
-  hardware.cpu.amd.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
-
-  # Enable direct rendering for 32-bit applications (steam, wine, etc.)
-  hardware.opengl.driSupport32Bit = true;
 
   # Use GRUB bootloader
   boot.loader = {
@@ -90,9 +82,9 @@ in {
 
     linuxPackages_base = pkgs.linuxPackagesFor kernel;
 
-    linuxPackages = linuxPackages_base.extend (lib.const (super: {
+    linuxPackages = linuxPackages_base.extend (const (super: {
       # NixOS 19.09: v4l2loopback 0.12.0 doesn't compile for Linux 5.x
-      v4l2loopback = super.v4l2loopback.overrideAttrs (oldAttrs: rec {
+      v4l2loopback = super.v4l2loopback.overrideAttrs (const rec {
         version = "0.12.3";
         name = "v4l2loopback-${version}-${super.kernel.version}";
         src = pkgs.fetchFromGitHub {
@@ -108,48 +100,17 @@ in {
     }));
   in linuxPackages;
 
-  # Kernel modules
+  # Extra kernel modules
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback
-    r8125
   ];
-  boot.kernelModules = [ "r8125" ];
 
   # Clean /tmp on boot
   boot.cleanTmpDir = true;
 
-  # Setup volume mount points
-  fileSystems."/mnt/echo" = {
-    device = "/dev/disk/by-uuid/56362696362676E1";
-    fsType = "ntfs-3g";
-  };
-  fileSystems."/mnt/charlie" = {
-    device = "/dev/disk/by-uuid/6EC886EBC886B0BF";
-    fsType = "ntfs-3g";
-  };
-  fileSystems."/mnt/delta" = {
-    device = "/dev/disk/by-uuid/BC4080AD40807046";
-    fsType = "ntfs-3g";
-  };
-  fileSystems."/mnt/hotel" = {
-    device = "/dev/disk/by-uuid/06804D92804D895F";
-    fsType = "ntfs-3g";
-  };
-  fileSystems."/mnt/steam" = {
-    device = "/dev/disk/by-uuid/1e20e85c-b692-411f-aab5-66c19ecb2bf5";
-    fsType = "ext4";
-  };
-  fileSystems."/mnt/games" = {
-    device = "/dev/disk/by-uuid/9df014e5-955d-4e3a-92b1-7750a4cd3ebc";
-    fsType = "ext4";
-  };
-
   # Enable kvm
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemuPackage = pkgs.qemu_kvm;
-
-  # Enable dconf (required for virt-manager)
-  programs.dconf.enable = true;
 
   # Enable docker
   virtualisation.docker.enable = true;
@@ -196,15 +157,12 @@ in {
     w3m
   ]);
 
-  # Disable x11-ssh-askpass
-  # https://github.com/NixOS/nixpkgs/issues/24311#issuecomment-528652343
-  programs.ssh.askPassword = "";
-
   # Set bash as default shell
   users.defaultUserShell = pkgs.bash;
 
-  # Enable zsh
-  programs.zsh.enable = true;
+  # Disable x11-ssh-askpass
+  # https://github.com/NixOS/nixpkgs/issues/2431#issuecomment-528652343
+  programs.ssh.askPassword = "";
 
   # Set neovim as default editor
   environment.sessionVariables.EDITOR = "nvim";
@@ -255,11 +213,6 @@ in {
     };
   };
 
-  # Fix PS3 controller not getting picked up
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0268", MODE="0660", TAG+="uaccess", GROUP="input"
-  '';
-
   # Enable the X11 windowing system
   services.xserver = {
     enable = true;
@@ -267,7 +220,7 @@ in {
     xkbOptions = "caps:hyper";
     videoDrivers = [ "nvidia" ];
 
-    screenSection = lib.concatMapStrings (x: x + "\n") [
+    screenSection = concatMapStrings (x: x + "\n") [
       # Set primary display
       ''Option "nvidiaXineramaInfoOrder" "DP-4"''
       # Set display configuration
@@ -334,16 +287,17 @@ in {
     desktopManager.default = "xsession";
     desktopManager.xterm.enable = false;
     desktopManager.gnome3.enable = false;
-    desktopManager.session = [
-      {
-        manager = "desktop";
-        name = "xsession";
-        start = ''
+    desktopManager.session = singleton ({
+      manager = "desktop";
+      name = "xsession";
+      start = ''
           exec "$HOME/.xsession"
-        '';
-      }
-    ];
+      '';
+    });
   };
+
+  # Enable dconf (required for virt-manager)
+  programs.dconf.enable = true;
 
   # Enable gnome dbus (required for enabling themes)
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
@@ -354,6 +308,9 @@ in {
   environment.variables.GIO_EXTRA_MODULES = [
     "${pkgs.gnome3.gvfs}/lib/gio/modules"
   ];
+
+  # Enable direct rendering for 32-bit applications (steam, wine, etc.)
+  hardware.opengl.driSupport32Bit = true;
 
   # Users
   users.mutableUsers = false;
@@ -374,10 +331,11 @@ in {
       makeUser = path: overrides:
         let
           user = import path {
-            inherit stateVersion channelSources;
+            inherit (config.system) stateVersion;
+            inherit channelSources;
           };
-        in lib.setFunctionArgs (args: (user args) // overrides)
-          (lib.functionArgs user);
+        in setFunctionArgs (args: (user args) // overrides)
+          (functionArgs user);
     in {
       peelz = makeUser ../../home-peelz/home.nix ({
         my.graphical.enable = true;
