@@ -34,6 +34,7 @@ let
   essentials = import ../../common/essentials.nix pkgs;
 in {
   imports = [
+    ../../modules
     ./hardware-configuration.nix
     ./persistence.nix
     "${channelSources.home-manager}/nixos"

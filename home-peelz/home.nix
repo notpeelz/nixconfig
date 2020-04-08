@@ -2,6 +2,7 @@
 { lib, config, pkgs, ... }:
 
 with builtins;
+with lib;
 let
   # Creates a list of overlays from the files in a directory
   makeOverlays = overlayRoot:
@@ -11,7 +12,7 @@ let
     in overlays;
 
   channelSources = args.channelSources // {
-    nixos-unstable = builtins.fetchTarball {
+    nixos-unstable = fetchTarball {
       url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
     };
   };
@@ -37,7 +38,7 @@ in {
   manual.manpages.enable = false;
 
   # Overlays
-  nixpkgs.overlays = lib.singleton (final: super: {
+  nixpkgs.overlays = singleton (final: super: {
     # Make these available as pseudo-packages
     inherit pkgs-unstable;
   }) ++ makeOverlays ./overlays;
