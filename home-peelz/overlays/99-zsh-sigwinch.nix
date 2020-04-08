@@ -1,1 +1,0 @@
-../../overlays/zsh-sigwinch.nix
