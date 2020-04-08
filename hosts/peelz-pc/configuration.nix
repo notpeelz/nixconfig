@@ -193,7 +193,7 @@ in {
     enable = true;
     support32Bit = true;
     # https://nixos.wiki/wiki/PulseAudio
-    configFile = pkgs.runCommand "default.pa" {} ''
+    configFile = pkgs.runCommand "default.pa" { } ''
       sed '
         s/module-udev-detect$/module-udev-detect tsched=0/
         s/^load-module module-suspend-on-idle$//

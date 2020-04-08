@@ -1,9 +1,10 @@
-{ stateVersion, channelSources ? {} }@args:
+{ stateVersion, channelSources ? { } }:
 { lib, config, pkgs, ... }:
 
 with builtins;
 with lib;
-let
+let channelSources' = channelSources;
+in let
   # Creates a list of overlays from the files in a directory
   makeOverlays = overlayRoot:
     let
@@ -11,11 +12,11 @@ let
         (attrNames (readDir overlayRoot));
     in overlays;
 
-  channelSources = args.channelSources // {
+  channelSources = {
     nixos-unstable = fetchTarball {
       url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
     };
-  };
+  } // channelSources';
 
   pkgs-unstable = import channelSources.nixos-unstable {
     inherit (config.nixpkgs) config;
