@@ -335,7 +335,7 @@ in {
             inherit (config.system) stateVersion;
             inherit channelSources;
           };
-        in setFunctionArgs (args: (user args) // overrides)
+        in setFunctionArgs (args: recursiveUpdate (user args) overrides)
           (functionArgs user);
     in {
       peelz = makeUser ../../home-peelz/home.nix ({
