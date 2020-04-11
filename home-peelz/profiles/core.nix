@@ -39,6 +39,7 @@ in {
     nix-index
     nix-du
     nix-universal-prefetch
+    nixos-eval-config
     haskellPackages.niv # NixOS 19.09: renamed to pkgs.niv on unstable
     nixfmt
     nixpkgs-review
