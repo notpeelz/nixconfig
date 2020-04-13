@@ -1,0 +1,1 @@
+../../../overlays/neovim-desktop.nix

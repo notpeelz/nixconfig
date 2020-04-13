@@ -1,0 +1,1 @@
+../../../overlays/nautilus-desktop.nix

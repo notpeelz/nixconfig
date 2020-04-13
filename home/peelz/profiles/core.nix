@@ -2,7 +2,7 @@
 
 let
   # Essential packages
-  essentials = import ../../common/essentials.nix pkgs;
+  essentials = import ../../../common/essentials.nix pkgs;
 
   # Replace interactive bash shells with zsh
   bashrc = pkgs.writeText "bashrc" ''

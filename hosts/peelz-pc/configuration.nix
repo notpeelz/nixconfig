@@ -340,8 +340,12 @@ in {
         in setFunctionArgs (args: recursiveUpdate (user args) overrides)
           (functionArgs user);
     in {
-      peelz = makeUser ../../home-peelz/home.nix ({
-        my.graphical.enable = true;
+      peelz = makeUser ../../home/peelz ({
+        my.graphical = {
+          enable = true;
+          nvidia.enable = true;
+        };
+
         my.social.enable = true;
         my.gaming.enable = true;
         my.dev.enable = true;
