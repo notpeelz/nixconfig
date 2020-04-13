@@ -207,10 +207,12 @@ in {
       high-priority = "yes";
       resample-method = "speex-float-10";
       nice-level = -11;
-      realtime-scheduling = "yes";
-      realtime-priority = 9;
-      rlimit-rtprio = 9;
-      default-fragment-size-msec = 5;
+      # realtime scheduling occasionally causes choppy audio
+      #realtime-scheduling = "yes";
+      #realtime-priority = 9;
+      #rlimit-rtprio = 9;
+      default-fragments = 2;
+      default-fragment-size-msec = 2;
     };
   };
 
