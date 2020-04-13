@@ -23,13 +23,11 @@ in let
     overlays = makeOverlays ./overlays-unstable;
   };
 in {
-  imports = [
-    ./profiles/core.nix
-    ./profiles/graphical.nix
-    ./profiles/gaming.nix
-    ./profiles/social.nix
-    ./profiles/dev.nix
-  ];
+  imports = let
+    moduleRoot = ./profiles;
+    modules = map (name: import (moduleRoot + "/${name}"))
+      (attrNames (readDir moduleRoot));
+  in modules;
 
   # Allow non-free software.
   nixpkgs.config.allowUnfree = true;
