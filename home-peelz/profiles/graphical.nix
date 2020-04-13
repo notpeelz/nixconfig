@@ -52,13 +52,11 @@ in {
 
       # Fonts
       nerdfonts # FIXME: this package is MASSIVE
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      liberation_ttf
-      fira-code
-      fira-code-symbols
     ]);
+
+    # Enable fontconfig (required for generating ~/.cache/fontconfig)
+    # 19.09: mkForce avoids an option conflict; https://github.com/rycee/home-manager/issues/1118
+    fonts.fontconfig.enable = mkForce true;
 
     # Set GTK and Qt theme
     gtk = {
