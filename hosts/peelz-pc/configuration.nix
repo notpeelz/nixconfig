@@ -162,7 +162,7 @@ in {
   users.defaultUserShell = pkgs.bash;
 
   # Disable x11-ssh-askpass
-  # https://github.com/NixOS/nixpkgs/issues/2431#issuecomment-528652343
+  # https://github.com/NixOS/nixpkgs/issues/24311#issuecomment-528652343
   programs.ssh.askPassword = "";
 
   # Set neovim as default editor
