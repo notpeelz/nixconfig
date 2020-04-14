@@ -223,7 +223,7 @@ in {
     xkbOptions = "caps:hyper";
     videoDrivers = [ "nvidia" ];
 
-    screenSection = concatMapStrings (x: x + "\n") [
+    screenSection = concatStringsSep "\n" [
       # Set primary display
       ''Option "nvidiaXineramaInfoOrder" "DP-4"''
       # Set display configuration
