@@ -212,7 +212,7 @@ in {
       #realtime-priority = 9;
       #rlimit-rtprio = 9;
       default-fragments = 2;
-      default-fragment-size-msec = 2;
+      default-fragment-size-msec = 4;
     };
   };
 
