@@ -342,7 +342,7 @@ in {
     in {
       peelz = makeUser ../../home/peelz ({
         my.graphical = {
-          enable = true;
+          enable = config.services.xserver.enable;
           nvidia.enable = true;
         };
 
