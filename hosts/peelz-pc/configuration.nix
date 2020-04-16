@@ -290,13 +290,13 @@ in {
     desktopManager.default = "xsession";
     desktopManager.xterm.enable = false;
     desktopManager.gnome3.enable = false;
-    desktopManager.session = singleton ({
+    desktopManager.session = singleton {
       manager = "desktop";
       name = "xsession";
       start = ''
           exec "$HOME/.xsession"
       '';
-    });
+    };
   };
 
   # Enable dconf (required for virt-manager)
