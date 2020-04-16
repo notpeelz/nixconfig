@@ -357,6 +357,9 @@ in {
       }));
     };
 
+  # Custom modules
+  my.hwdev.enable = true;
+
   # Nix store settings
   nix.optimise.automatic = true;
   nix.gc.automatic = true;
