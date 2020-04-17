@@ -216,6 +216,14 @@ in {
     };
   };
 
+  # Prevent the NVIDIA sources (binary blobs) from getting GC'd
+  system.extraDependencies =
+    (map
+      (module: module.src)
+      (flatten
+        (map (driver: driver.modules)
+          (config.services.xserver.drivers))));
+
   # Enable the X11 windowing system
   services.xserver = {
     enable = true;
