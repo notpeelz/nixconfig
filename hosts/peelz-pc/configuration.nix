@@ -343,11 +343,20 @@ in {
       peelz = makeUser ../../home/peelz ({
         my.graphical = {
           enable = config.services.xserver.enable;
+          wm.bspwm.monitors = {
+            primary = "DP-4";
+            secondary = "DP-2";
+          };
           nvidia.enable = true;
         };
 
+        my.gaming = {
+          enable = true;
+          ultrawide = true;
+        };
+
         my.social.enable = true;
-        my.gaming.enable = true;
+
         my.dev.enable = true;
       } // (with config.services.xserver.displayManager.lightdm.greeters.gtk; {
         # Copy theme settings from lightdm

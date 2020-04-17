@@ -5,17 +5,22 @@ let
   hmSrc = pkgs.channelSources.home-manager;
   cfg = config.my.graphical;
 in {
+  imports = [
+    ./nvidia.nix
+    ./bspwm.nix
+  ];
+
   options.my.graphical = {
     enable = mkEnableOption "Graphical environment";
   };
 
   config = mkIf cfg.enable {
+    my.graphical.wm.bspwm.enable = mkDefault true;
+
     # Packages
     home.packages = (with pkgs.pkgs-unstable; [
       # Bleeding edge packages
       kitty
-      bspwm
-      sxhkd
     ]) ++ (with pkgs; [
       # Desktop environment
       polybar
@@ -53,6 +58,11 @@ in {
       # Fonts
       nerdfonts # FIXME: this package is MASSIVE
     ]);
+
+    my.graphical.wm.bspwm.rules = [{
+      name = "Peek";
+      state = "floating";
+    }];
 
     # Enable fontconfig (required for generating ~/.cache/fontconfig)
     # 19.09: mkForce avoids an option conflict; https://github.com/rycee/home-manager/issues/1118
@@ -107,67 +117,6 @@ in {
 
     # Map caps to hyper
     home.keyboard.options = [ "caps:hyper" ];
-
-    # X Session
-    xsession.enable = true;
-    xsession.initExtra = ''
-      # Disable OpenGL 'Sync to VBlank'
-      nvidia-settings -a 'SyncToVBlank=0' &
-
-      # Disable OpenGL 'Allow Flipping'
-      nvidia-settings -a 'AllowFlipping=0' &
-
-      # Restore wallpaper
-      nitrogen --restore &
-    '';
-
-    # Set up window manager
-    xsession.windowManager.command = let
-      xidlehook = "${pkgs.xidlehook}/bin/xidlehook";
-      dm-tool = "${pkgs.lightdm}/bin/dm-tool";
-      bspwm = "${pkgs.bspwm}/bin/bspwm";
-    in ''
-      # Monitors turn off after 5 minutes;
-      # session will be locked 20 seconds after that if not woken up
-      ${xidlehook} \
-        --not-when-fullscreen \
-        --not-when-audio \
-        --timer primary 320 '${dm-tool} lock' \'\' &
-      xidlehook_PID="$!"
-
-      # Start bspwm
-      ${bspwm} -c "$HOME/.bspwmrc"
-
-      kill "$xidlehook_PID"
-    '';
-
-    # Compositor
-    # FIXME: compton is deprecated and being replaced by picom with NixOS 20.03
-    services.compton = {
-      enable = true;
-      package = pkgs.writeShellScriptBin "compton" ''
-        ${pkgs.compton}/bin/compton --dbus "$@"
-      '';
-      backend = "glx";
-      vSync = "false";
-      fade = true;
-      fadeDelta = 4;
-      extraOptions = ''
-        # https://github.com/jEsuSdA/the-perfect-desktop/blob/master/compton/compton.conf
-        unredir-if-possible = true;
-        glx-no-stencil = true;
-        glx-copy-from-front = false;
-        #glx-use-copysubbuffermesa = true; # deprecated/removed
-        glx-no-rebind-pixmap = true;
-        #glx-swap-method = "undefined"; # deprecated
-        #paint-on-overlay = true; # deprecated; always enabled
-        sw-opti = false;
-        detect-transient = true;
-        detect-client-leader = true;
-        mark-wmwin-focused = true;
-        mark-ovredir-focused = true;
-      '';
-    };
 
     # Enable Redshift for night time
     services.redshift = {
