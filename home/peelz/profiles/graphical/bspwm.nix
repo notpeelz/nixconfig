@@ -93,10 +93,9 @@ in {
     enable = mkEnableOption "BSPWM window manager";
     monitors.primary = mkOption {
       type = types.str;
-      default = null;
     };
     monitors.secondary = mkOption {
-      type = types.str;
+      type = types.nullOr types.str;
       default = null;
     };
     block_fullscreen = mkOption {
@@ -169,8 +168,13 @@ in {
 
           # Create 10 desktops per monitor
           ${bspc} monitor ${escapeShellArg cfg.monitors.primary} -d {0..9}
-          ${bspc} monitor ${escapeShellArg cfg.monitors.secondary} -d {10..19}
-
+        ''
+        (optionalString
+          (cfg.monitors.secondary != null)
+          ''
+            ${bspc} monitor ${escapeShellArg cfg.monitors.secondary} -d {10..19}
+          '')
+        ''
           # https://github.com/baskerville/bspwm/issues/679#issuecomment-315874130
           function enforce_monitor_position() {
             MON_ID="$(${bspc} query -M --names -m "$1")"
