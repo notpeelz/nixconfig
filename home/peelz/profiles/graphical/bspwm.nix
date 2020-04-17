@@ -137,17 +137,21 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    home.packages = with pkgs.pkgs-unstable; [
-      bspwm
-      sxhkd # TODO: put this in its own module
-    ];
+  config = mkIf cfg.enable (let
+    wmPkgs = with pkgs.pkgs-unstable; {
+      inherit (pkgs.pkgs-unstable)
+        bspwm
+        sxhkd # TODO: put this in its own module
+        nitrogen;
+    };
+  in {
+    home.packages = attrValues wmPkgs;
 
     # X Session
     xsession.enable = true;
     xsession.initExtra = ''
       # Restore wallpaper
-      nitrogen --restore &
+      ${wmPkgs.nitrogen}/bin/nitrogen --restore &
     '';
 
     # TODO: delegate xidlehook options to my.graphical.xidlehook
@@ -155,8 +159,8 @@ in {
 
     # Set up window manager
     xsession.windowManager.command = let
-      bspwm = "${pkgs.bspwm}/bin/bspwm";
-      bspc = "${pkgs.bspwm}/bin/bspc";
+      bspwm = "${wmPkgs.bspwm}/bin/bspwm";
+      bspc = "${wmPkgs.bspwm}/bin/bspc";
       bspwmrc = pkgs.writeShellScript "bspwmrc" (concatStringsSep "\n" [
         # Monitor and desktop configuration
         ''
@@ -271,5 +275,5 @@ in {
         mark-ovredir-focused = true;
       '';
     };
-  };
+  });
 }

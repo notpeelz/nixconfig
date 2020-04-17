@@ -24,7 +24,6 @@ in {
     ]) ++ (with pkgs; [
       # Desktop environment
       polybar
-      nitrogen
       rofi
       playerctl
       xclip
