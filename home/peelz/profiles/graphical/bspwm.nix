@@ -196,8 +196,10 @@ in {
         ''
 
         # General settings
+        (optionalString cfg.block_fullscreen ''
+          ${bspc} config ignore_ewmh_fullscreen all
+        '')
         ''
-          ${bspc} config ignore_ewmh_fullscreen ${escapeShellArg cfg.block_fullscreen}
           ${bspc} config automatic_scheme ${escapeShellArg cfg.automatic_scheme}
           ${bspc} config split_ratio ${escapeShellArg cfg.split_ratio}
           ${bspc} config borderless_monocle true
