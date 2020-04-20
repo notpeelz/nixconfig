@@ -51,8 +51,8 @@ in {
 
   # Overlays
   nixpkgs.overlays = singleton (final: super: {
-    # Inject pkgs-unstable as a pseudo-package for the backports overlay
-    inherit pkgs-unstable;
+    # Make these available as pseudo-packages
+    inherit channelSources pkgs-unstable;
   }) ++ makeOverlays ./overlays;
 
   # Use GRUB bootloader
@@ -325,60 +325,49 @@ in {
 
   # Users
   users.mutableUsers = false;
-  users.users.peelz = {
-    isNormalUser = true;
-    uid = 1000;
-    extraGroups = [
-      "wheel"
-      "docker"
-      "libvirtd"
-      "wireshark"
-      "arduino"
-    ];
-    shell = pkgs.bash;
-    initialHashedPassword = secrets.hashedPasswords.peelz;
-  };
   users.users.root = {
     initialHashedPassword = secrets.hashedPasswords.root;
   };
-
-  # User configurations
-  home-manager.users =
-    let
-      makeUser = path: overrides:
-        let
-          user = import path {
-            inherit (config.system) stateVersion;
-            inherit channelSources;
-          };
-        in setFunctionArgs (args: recursiveUpdate (user args) overrides)
-          (functionArgs user);
-    in {
-      peelz = makeUser ../../home/peelz ({
-        my.graphical = {
-          enable = config.services.xserver.enable;
-          wm.bspwm.monitors = {
-            primary = "DP-4";
-            secondary = "DP-2";
-          };
-          nvidia.enable = true;
-        };
-
-        my.gaming = {
-          enable = true;
-          ultrawide = true;
-        };
-
-        my.social.enable = true;
-
-        my.dev.enable = true;
-      } // (with config.services.xserver.displayManager.lightdm.greeters.gtk; {
-        # Copy theme settings from lightdm
-        gtk.theme = theme;
-        gtk.iconTheme = iconTheme;
-        xsession.pointerCursor = cursorTheme;
-      }));
+  my.users.users.peelz = {
+    config = {
+      isNormalUser = true;
+      uid = 1000;
+      extraGroups = [
+        "wheel"
+        "docker"
+        "libvirtd"
+        "wireshark"
+        "arduino"
+      ];
+      shell = pkgs.bash;
+      initialHashedPassword = secrets.hashedPasswords.peelz;
     };
+
+    overrides = ({
+      my.graphical = {
+        enable = config.services.xserver.enable;
+        wm.bspwm.monitors = {
+          primary = "DP-4";
+          secondary = "DP-2";
+        };
+        nvidia.enable = true;
+      };
+
+      my.gaming = {
+        enable = true;
+        ultrawide = true;
+      };
+
+      my.social.enable = true;
+
+      my.dev.enable = true;
+    } // (with config.services.xserver.displayManager.lightdm.greeters.gtk; {
+      # Copy theme settings from lightdm
+      gtk.theme = theme;
+      gtk.iconTheme = iconTheme;
+      xsession.pointerCursor = cursorTheme;
+    }));
+  };
 
   # Custom modules
   my.hwdev.enable = true;
