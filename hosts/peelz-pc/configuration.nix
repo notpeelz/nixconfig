@@ -328,7 +328,13 @@ in {
   users.users.peelz = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" "docker" "libvirtd" ];
+    extraGroups = [
+      "wheel"
+      "docker"
+      "libvirtd"
+      "wireshark"
+      "arduino"
+    ];
     shell = pkgs.bash;
     initialHashedPassword = secrets.hashedPasswords.peelz;
   };

@@ -22,5 +22,13 @@ in {
     services.udev.packages = with pkgs; [
       rtl-sdr
     ];
+
+    # Arduino
+    users.groups = {
+      arduino = {};
+    };
+    services.udev.extraRules = ''
+      SUBSYSTEM=="tty", ATTRS{manufacturer}=="Arduino*", SYMLINK+="arduino%n", MODE="0770", GROUP="arduino"
+    '';
   };
 }
