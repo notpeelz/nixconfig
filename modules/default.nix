@@ -1,10 +1,15 @@
 { lib, config, pkgs, ... }:
 
+with lib;
 {
-  imports = [
-    # TODO: import all files/folders automatically
-    ./users.nix
-    ./fix-zsh.nix
-    ./hwdev.nix
-  ];
+  imports =
+    let
+      inherit (builtins) readDir;
+      modules = map (name: import (./. + "/${name}"))
+        (remove "default.nix"
+          (attrNames
+            (filterAttrs
+              (n: v: v == "directory" || hasSuffix ".nix" n)
+              (readDir ./.))));
+    in modules;
 }
