@@ -292,20 +292,14 @@ in {
     };
 
     # Enable libinput
-    libinput.enable = true;
-
-    # Disable mouse acceleration
-    # Enable autoscrolling (middle mouse click)
-    config = ''
-      Section "InputClass"
-        Identifier "libinputConfiguration"
-        Driver "libinput"
-        MatchIsPointer "on"
-        Option "AccelProfile" "flat"
-        Option "ScrollMethod" "button"
-        Option "ScrollButton" "2"
-      EndSection
-    '';
+    libinput = {
+      enable = true;
+      # Disable mouse acceleration
+      accelProfile = "flat";
+      # Enable autoscrolling (middle mouse click)
+      scrollMethod = "button";
+      scrollButton = 2;
+    };
   };
 
   # Enable dconf (required for virt-manager)
