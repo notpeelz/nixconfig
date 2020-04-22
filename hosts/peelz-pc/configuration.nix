@@ -6,8 +6,9 @@
 
 with lib;
 let
-  makeOverlays = with builtins; overlayRoot:
+  makeOverlays = overlayRoot:
     let
+      inherit (builtins) readDir;
       overlays = map (name: import (overlayRoot + "/${name}"))
         (attrNames (readDir overlayRoot));
     in overlays;
