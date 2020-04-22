@@ -255,30 +255,27 @@ in {
     '';
 
     # Compositor
-    # FIXME: compton is deprecated and being replaced by picom with NixOS 20.03
-    services.compton = {
+    services.picom = {
       enable = true;
-      package = pkgs.writeShellScriptBin "compton" ''
-        ${pkgs.compton}/bin/compton --dbus "$@"
+      package = pkgs.writeShellScriptBin "picom" ''
+        ${pkgs.picom}/bin/picom --dbus "$@"
       '';
       backend = "glx";
-      vSync = "false";
+      vSync = false;
       fade = true;
       fadeDelta = 4;
       extraOptions = ''
         # https://github.com/jEsuSdA/the-perfect-desktop/blob/master/compton/compton.conf
         unredir-if-possible = true;
-        glx-no-stencil = true;
-        glx-copy-from-front = false;
-        #glx-use-copysubbuffermesa = true; # deprecated/removed
-        glx-no-rebind-pixmap = true;
-        #glx-swap-method = "undefined"; # deprecated
-        #paint-on-overlay = true; # deprecated; always enabled
-        sw-opti = false;
-        detect-transient = true;
-        detect-client-leader = true;
-        mark-wmwin-focused = true;
-        mark-ovredir-focused = true;
+        xrender-sync-fence = true;
+        #glx-no-stencil = true;
+        #glx-copy-from-front = false;
+        #glx-no-rebind-pixmap = true;
+        #sw-opti = false;
+        #detect-transient = true;
+        #detect-client-leader = true;
+        #mark-wmwin-focused = true;
+        #mark-ovredir-focused = true;
       '';
     };
   });
