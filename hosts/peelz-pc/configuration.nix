@@ -119,6 +119,9 @@ in {
   # Clean /tmp on boot
   boot.cleanTmpDir = true;
 
+  # Mount /tmp as tmpfs (in memory)
+  boot.tmpOnTmpfs = true;
+
   # Enable kvm
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemuPackage = pkgs.qemu_kvm;
