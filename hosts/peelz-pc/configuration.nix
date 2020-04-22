@@ -121,16 +121,15 @@ in {
   networking.hostName = "peelz-pc";
 
   # Enable DHCP
-  networking.useDHCP = false;
   networking.interfaces.enp5s0.useDHCP = true;
   networking.interfaces.enp4s0.useDHCP = true;
 
-  # Internationalization properties
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "us";
-    defaultLocale = "en_US.UTF-8";
-  };
+  # Linux console settings
+  console.font = "Lat2-Terminus16";
+  console.keyMap = "us";
+
+  # Locale settings
+  i18n.defaultLocale = "en_US.UTF-8";
 
   # Time zone
   time.timeZone = "America/Montreal";
@@ -223,7 +222,7 @@ in {
       (module: module.src)
       (flatten
         (map (driver: driver.modules)
-          (config.services.xserver.drivers))));
+          config.services.xserver.drivers)));
 
   # Enable the X11 windowing system
   services.xserver = {
@@ -280,6 +279,18 @@ in {
       ${xset} s 300 300 -dpms
     '';
 
+    displayManager.defaultSession = "xsession";
+
+    desktopManager.xterm.enable = false;
+    desktopManager.gnome3.enable = false;
+    desktopManager.session = singleton {
+      manager = "desktop";
+      name = "xsession";
+      start = ''
+          exec "$HOME/.xsession"
+      '';
+    };
+
     # Enable libinput
     libinput.enable = true;
 
@@ -295,17 +306,6 @@ in {
         Option "ScrollButton" "2"
       EndSection
     '';
-
-    desktopManager.default = "xsession";
-    desktopManager.xterm.enable = false;
-    desktopManager.gnome3.enable = false;
-    desktopManager.session = singleton {
-      manager = "desktop";
-      name = "xsession";
-      start = ''
-          exec "$HOME/.xsession"
-      '';
-    };
   };
 
   # Enable dconf (required for virt-manager)
