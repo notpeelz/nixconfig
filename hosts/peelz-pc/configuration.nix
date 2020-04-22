@@ -85,15 +85,16 @@ in {
     linuxPackages_base = pkgs.linuxPackagesFor kernel;
 
     linuxPackages = linuxPackages_base.extend (const (super: {
-      # NixOS 19.09: v4l2loopback 0.12.0 doesn't compile for Linux 5.x
+      # 20.03: v4l2loopback 0.12.5 is required for kernel 5.5
+      # https://github.com/umlaeute/v4l2loopback/issues/257
       v4l2loopback = super.v4l2loopback.overrideAttrs (const rec {
-        version = "0.12.3";
         name = "v4l2loopback-${version}-${super.kernel.version}";
+        version = "0.12.5";
         src = pkgs.fetchFromGitHub {
           owner = "umlaeute";
           repo = "v4l2loopback";
           rev = "v${version}";
-          sha256 = "01wahmrh4iw27cfmypik6frapq14vn7m9shmj5g7cr1apz2523aq";
+          sha256 = "1qi4l6yam8nrlmc3zwkrz9vph0xsj1cgmkqci4652mbpbzigg7vn";
         };
       });
 
@@ -106,6 +107,14 @@ in {
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback
   ];
+
+  # Register a v4l2loopback device at boot
+  boot.kernelModules = [
+    "v4l2loopback"
+  ];
+  boot.extraModprobeConfig = ''
+    options v4l2loopback exclusive_caps=1 video_nr=9 card_label=v4l2sink
+  '';
 
   # Clean /tmp on boot
   boot.cleanTmpDir = true;
