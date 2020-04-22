@@ -23,7 +23,7 @@ let
     };
 
     home-manager = builtins.fetchTarball {
-      url = "https://github.com/rycee/home-manager/archive/release-19.09.tar.gz";
+      url = "https://github.com/rycee/home-manager/archive/release-20.03.tar.gz";
     };
   };
 
@@ -45,7 +45,7 @@ in {
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.03";
 
   # Allow non-free software
   nixpkgs.config.allowUnfree = true;
