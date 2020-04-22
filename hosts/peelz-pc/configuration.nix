@@ -317,6 +317,7 @@ in {
   my.graphical.enable = true;
   my.graphical.nvidia.enable = true;
   my.hwdev.enable = true;
+  my.dev.enable = true;
 
   # Nix store settings
   nix.optimise.automatic = true;

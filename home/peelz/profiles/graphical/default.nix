@@ -42,7 +42,6 @@ in {
       obs-studio
       shutter spectacle peek
       screenkey
-      wireshark
       qdirstat
       remmina
       bless
