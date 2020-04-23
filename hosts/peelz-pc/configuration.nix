@@ -228,21 +228,8 @@ in {
     };
   };
 
-  # Prevent the NVIDIA sources (binary blobs) from getting GC'd
-  system.extraDependencies =
-    (map
-      (module: module.src)
-      (flatten
-        (map (driver: driver.modules)
-          config.services.xserver.drivers)));
-
-  # Enable the X11 windowing system
+  # Screen configuration
   services.xserver = {
-    enable = true;
-    layout = "ca(multi)";
-    xkbOptions = "caps:hyper";
-    videoDrivers = [ "nvidia" ];
-
     screenSection = concatStringsSep "\n" [
       # Set primary display
       ''Option "nvidiaXineramaInfoOrder" "DP-4"''
@@ -276,56 +263,7 @@ in {
         };
       };
     };
-
-    displayManager.setupCommands = let
-      numlockx = "${pkgs.numlockx}/bin/numlockx";
-      xset = "${pkgs.xorg.xset}/bin/xset";
-    in ''
-      # Enable numlock
-      ${numlockx} on
-
-      # Set keyboard repeat delay/rate
-      ${xset} r rate 300 50
-
-      # Turn off monitors after 5 minutes of inactivity
-      ${xset} s 300 300 -dpms
-    '';
-
-    displayManager.defaultSession = "xsession";
-
-    desktopManager.xterm.enable = false;
-    desktopManager.gnome3.enable = false;
-    desktopManager.session = singleton {
-      manager = "desktop";
-      name = "xsession";
-      start = ''
-          exec "$HOME/.xsession"
-      '';
-    };
-
-    # Enable libinput
-    libinput = {
-      enable = true;
-      # Disable mouse acceleration
-      accelProfile = "flat";
-      # Enable autoscrolling (middle mouse click)
-      scrollMethod = "button";
-      scrollButton = 2;
-    };
   };
-
-  # Enable dconf (required for virt-manager)
-  programs.dconf.enable = true;
-
-  # Enable gnome dbus (required for enabling themes)
-  services.dbus.packages = with pkgs; [ gnome3.dconf ];
-
-  # Fix Nautilus not being able to access GVFS paths
-  # https://github.com/mate-desktop/caja/issues/1161#issuecomment-468299230
-  services.gvfs.enable = true;
-  environment.variables.GIO_EXTRA_MODULES = [
-    "${pkgs.gnome3.gvfs}/lib/gio/modules"
-  ];
 
   # Enable direct rendering for 32-bit applications (steam, wine, etc.)
   hardware.opengl.driSupport32Bit = true;
@@ -350,9 +288,8 @@ in {
       initialHashedPassword = secrets.hashedPasswords.peelz;
     };
 
-    overrides = ({
+    overrides = {
       my.graphical = {
-        enable = config.services.xserver.enable;
         wm.bspwm.monitors = {
           primary = "DP-4";
           secondary = "DP-2";
@@ -373,10 +310,12 @@ in {
       gtk.theme = theme;
       gtk.iconTheme = iconTheme;
       xsession.pointerCursor = cursorTheme;
-    }));
+    });
   };
 
   # Custom modules
+  my.graphical.enable = true;
+  my.graphical.nvidia.enable = true;
   my.hwdev.enable = true;
 
   # Nix store settings
