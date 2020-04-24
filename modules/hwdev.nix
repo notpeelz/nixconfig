@@ -11,6 +11,7 @@ in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; ([
       rtl-sdr
+      geda
     ] ++ (optionals config.services.xserver.enable [
       gqrx
     ]));
