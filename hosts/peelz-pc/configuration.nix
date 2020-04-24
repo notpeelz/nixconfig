@@ -30,9 +30,6 @@ let
   pkgs-unstable = import channelSources.nixos-unstable {
     inherit (config.nixpkgs) config;
   };
-
-  # Essential packages
-  essentials = import ../../common/essentials.nix pkgs;
 in {
   imports = [
     ../../modules
@@ -147,7 +144,7 @@ in {
   time.timeZone = "America/Montreal";
 
   # System packages
-  environment.systemPackages = essentials ++ (with pkgs; [
+  environment.systemPackages = with pkgs; [
     # System
     efibootmgr
 
@@ -168,20 +165,10 @@ in {
 
     # Text-based web browser
     w3m
-  ]);
-
-  # Set bash as default shell
-  users.defaultUserShell = pkgs.bash;
-
-  # Disable x11-ssh-askpass
-  # https://github.com/NixOS/nixpkgs/issues/24311#issuecomment-528652343
-  programs.ssh.askPassword = "";
+  ];
 
   # Set neovim as default editor
   environment.sessionVariables.EDITOR = "nvim";
-
-  # Enable sudo
-  security.sudo.enable = true;
 
   # Open ports in the firewall
   networking.firewall.allowedTCPPorts = [
@@ -192,9 +179,6 @@ in {
     # Steam Remote Play
     27031 27036
   ];
-
-  # Enable firewall
-  networking.firewall.enable = true;
 
   # Enable CUPS to print documents
   services.printing.enable = true;

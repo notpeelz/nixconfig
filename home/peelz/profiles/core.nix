@@ -2,14 +2,14 @@
 
 let
   # Essential packages
-  essentials = import ../../../common/essentials.nix pkgs;
+  essential-pkgs = import ../../../common/essential-pkgs.nix pkgs;
 
   # Replace interactive bash shells with zsh
   bashrc = pkgs.writeText "bashrc" ''
     [[ "$-" == *i* && -z "$IN_NIX_SHELL" ]] && exec "${pkgs.zsh}/bin/zsh"
   '';
 in {
-  home.packages = essentials ++ (with pkgs.pkgs-unstable; [
+  home.packages = essential-pkgs ++ (with pkgs.pkgs-unstable; [
     (neovim.override {
       viAlias = true;
       vimAlias = true;
