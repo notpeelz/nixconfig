@@ -113,12 +113,6 @@ in {
     options v4l2loopback exclusive_caps=1 video_nr=9 card_label=v4l2sink
   '';
 
-  # Clean /tmp on boot
-  boot.cleanTmpDir = true;
-
-  # Mount /tmp as tmpfs (in memory)
-  boot.tmpOnTmpfs = true;
-
   # Enable kvm
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemuPackage = pkgs.qemu_kvm;
@@ -132,13 +126,6 @@ in {
   # Enable DHCP
   networking.interfaces.enp5s0.useDHCP = true;
   networking.interfaces.enp4s0.useDHCP = true;
-
-  # Linux console settings
-  console.font = "Lat2-Terminus16";
-  console.keyMap = "us";
-
-  # Locale settings
-  i18n.defaultLocale = "en_US.UTF-8";
 
   # Time zone
   time.timeZone = "America/Montreal";
