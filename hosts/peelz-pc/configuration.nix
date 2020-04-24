@@ -113,13 +113,6 @@ in {
     options v4l2loopback exclusive_caps=1 video_nr=9 card_label=v4l2sink
   '';
 
-  # Enable kvm
-  virtualisation.libvirtd.enable = true;
-  virtualisation.libvirtd.qemuPackage = pkgs.qemu_kvm;
-
-  # Enable docker
-  virtualisation.docker.enable = true;
-
   # Set hostname
   networking.hostName = "peelz-pc";
 
@@ -134,9 +127,6 @@ in {
   environment.systemPackages = with pkgs; [
     # System
     efibootmgr
-
-    # Virtualization
-    OVMF
 
     # Nix utils
     nix-index
@@ -289,6 +279,7 @@ in {
   my.graphical.nvidia.enable = true;
   my.hwdev.enable = true;
   my.dev.enable = true;
+  my.virt.enable = true;
 
   # Nix store settings
   nix.optimise.automatic = true;
