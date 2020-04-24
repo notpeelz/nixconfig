@@ -61,6 +61,8 @@ in {
         # Enable autoscrolling (middle mouse click)
         scrollMethod = "button";
         scrollButton = 2;
+        # Prevents lmb+rmb from sending a middle-mouse click
+        middleEmulation = false;
       };
     };
   };
