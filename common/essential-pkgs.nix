@@ -10,5 +10,6 @@ pkgs: with pkgs; [
   hexdump xxd
   binutils
   file fd tree
+  lsof
   htop pstree killall
 ]
