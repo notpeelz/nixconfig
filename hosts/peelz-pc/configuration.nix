@@ -147,16 +147,6 @@ in {
   # Set neovim as default editor
   environment.sessionVariables.EDITOR = "nvim";
 
-  # Open ports in the firewall
-  networking.firewall.allowedTCPPorts = [
-    # Steam Remote Play
-    27036 27037
-  ];
-  networking.firewall.allowedUDPPorts = [
-    # Steam Remote Play
-    27031 27036
-  ];
-
   # Enable CUPS to print documents
   services.printing.enable = true;
 
@@ -226,9 +216,6 @@ in {
     };
   };
 
-  # Enable direct rendering for 32-bit applications (steam, wine, etc.)
-  hardware.opengl.driSupport32Bit = true;
-
   # Users
   users.mutableUsers = false;
   users.users.root = {
@@ -279,6 +266,7 @@ in {
   my.graphical.nvidia.enable = true;
   my.hwdev.enable = true;
   my.dev.enable = true;
+  my.gaming.enable = true;
   my.virt.enable = true;
 
   # Nix store settings
