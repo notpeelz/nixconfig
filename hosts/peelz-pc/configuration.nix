@@ -17,6 +17,7 @@ let
   secrets = import ../../data/load-secrets.nix;
 
   # This allows refering to packages from other channels.
+  # TODO: used pinned nixpkgs
   channelSources = {
     nixos-unstable = builtins.fetchTarball {
       url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
@@ -63,55 +64,6 @@ in {
       useOSProber = true;
     };
   };
-
-  # Set kernel version
-  boot.kernelPackages = let
-    kernel = pkgs.linux_latest;
-    # kernel = let
-    #   base = pkgs-unstable.linux_latest;
-    # in pkgs.linuxManualConfig {
-    #   inherit (pkgs) stdenv;
-    #   inherit (base) version src;
-    #   allowImportFromDerivation = false;
-    #   configfile = pkgs.linuxConfig {
-    #     makeTarget = "defconfig";
-    #     inherit (base) src;
-    #   };
-    # };
-
-    linuxPackages_base = pkgs.linuxPackagesFor kernel;
-
-    linuxPackages = linuxPackages_base.extend (const (super: {
-      # 20.03: v4l2loopback 0.12.5 is required for kernel 5.5
-      # https://github.com/umlaeute/v4l2loopback/issues/257
-      v4l2loopback = super.v4l2loopback.overrideAttrs (const rec {
-        name = "v4l2loopback-${version}-${super.kernel.version}";
-        version = "0.12.5";
-        src = pkgs.fetchFromGitHub {
-          owner = "umlaeute";
-          repo = "v4l2loopback";
-          rev = "v${version}";
-          sha256 = "1qi4l6yam8nrlmc3zwkrz9vph0xsj1cgmkqci4652mbpbzigg7vn";
-        };
-      });
-
-      # NixOS 19.09: use the r8125 kmod package from unstable
-      r8125 = (pkgs-unstable.linuxPackagesFor kernel).r8125;
-    }));
-  in linuxPackages;
-
-  # Extra kernel modules
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback
-  ];
-
-  # Register a v4l2loopback device at boot
-  boot.kernelModules = [
-    "v4l2loopback"
-  ];
-  boot.extraModprobeConfig = ''
-    options v4l2loopback exclusive_caps=1 video_nr=9 card_label=v4l2sink
-  '';
 
   # Set hostname
   networking.hostName = "peelz-pc";
@@ -267,6 +219,7 @@ in {
   my.hwdev.enable = true;
   my.dev.enable = true;
   my.gaming.enable = true;
+  my.video.enable = true;
   my.virt.enable = true;
 
   # Nix store settings

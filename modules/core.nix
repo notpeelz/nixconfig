@@ -1,21 +1,50 @@
 { lib, config, pkgs, ... }:
 
 with lib;
-{
-  # Linux console settings
-  console.font = "Lat2-Terminus16";
-  console.keyMap = "us";
+let
+  kernelCfg = config.my.kernel;
+  overlayType = mkOptionType {
+    name = "kernelPackages-overlay";
+    check = isFunction;
+    merge = mergeOneOption;
+  };
+in {
+  options = {
+    my.kernel = {
+      kernel = mkOption {
+        type = types.package;
+        default = pkgs.linux_latest;
+      };
+      pkgOverlays = mkOption {
+        type = types.listOf overlayType;
+        default = [];
+      };
+    };
+  };
 
-  # Locale settings
-  i18n.defaultLocale = "en_US.UTF-8";
+  config = {
+    # Set kernel version
+    boot.kernelPackages = let
+      linuxPackages_base = pkgs.linuxPackagesFor kernelCfg.kernel;
 
-  # Clean /tmp on boot
-  boot.cleanTmpDir = true;
+      createPkgs =
+        foldl composeExtensions (final: super: {}) kernelCfg.pkgOverlays;
 
-  # Mount /tmp as tmpfs (in memory)
-  boot.tmpOnTmpfs = true;
+      linuxPackages =
+        linuxPackages_base.extend createPkgs;
+    in linuxPackages;
 
-  # Disable x11-ssh-askpass
-  # https://github.com/NixOS/nixpkgs/issues/24311#issuecomment-528652343
-  programs.ssh.askPassword = "";
+    # Linux console settings
+    console.font = "Lat2-Terminus16";
+    console.keyMap = "us";
+
+    # Locale settings
+    i18n.defaultLocale = "en_US.UTF-8";
+
+    # Clean /tmp on boot
+    boot.cleanTmpDir = true;
+
+    # Mount /tmp as tmpfs (in memory)
+    boot.tmpOnTmpfs = true;
+  };
 }
