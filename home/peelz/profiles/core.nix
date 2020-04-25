@@ -36,6 +36,7 @@ in {
     rmtrash
 
     # Misc
+    nmap
     sshfs
 
     # Nix utils
