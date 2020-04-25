@@ -35,6 +35,9 @@ in {
     trash-cli
     rmtrash
 
+    # Misc
+    sshfs
+
     # Nix utils
     nix-index
     nix-du
