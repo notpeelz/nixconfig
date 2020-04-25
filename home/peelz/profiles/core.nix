@@ -24,8 +24,6 @@ in {
     moreutils psutils
     nvtop progress
     ag
-    stow
-    git-crypt
 
     # CLI programs
     asciinema
@@ -36,8 +34,19 @@ in {
     rmtrash
 
     # Misc
+    # TODO: remove some of these once dotfiles are fully integrated
     nmap
     sshfs
+    wol
+    stress
+    rsync
+    nethogs
+    pv
+    stow
+    git-crypt
+    pandoc
+    fortune
+    imagemagick
 
     # Nix utils
     nix-index

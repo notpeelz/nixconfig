@@ -12,6 +12,8 @@ in let
         (attrNames (readDir overlayRoot));
     in overlays;
 
+  # Use sources from the host if possible, otherwise fall back to the latest
+  # upstream rev
   channelSources = {
     nixos-unstable = fetchTarball {
       url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
@@ -41,20 +43,6 @@ in {
     # Make these available as pseudo-packages
     inherit pkgs-unstable;
   }) ++ makeOverlays ./overlays;
-
-  # Packages
-  home.packages = with pkgs; [
-    # Misc programs
-    wol
-    stress
-    rsync
-    nethogs
-    pv
-    stow
-    pandoc
-    fortune
-    imagemagick
-  ];
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
