@@ -13,7 +13,7 @@ in {
     my.kernel = {
       kernel = mkOption {
         type = types.package;
-        default = pkgs.linux_latest;
+        default = pkgs.linux;
       };
       pkgOverlays = mkOption {
         type = types.listOf overlayType;
