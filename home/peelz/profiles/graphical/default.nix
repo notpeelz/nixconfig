@@ -33,6 +33,7 @@ in {
       xdotool
 
       # Programs
+      cool-retro-term
       chromium firefox
       pavucontrol
       gimp
