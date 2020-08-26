@@ -109,6 +109,10 @@ in {
       "x-scheme-handler/magnet" = torrent;
     };
 
+    # OBS Plugins
+    xdg.configFile."obs-studio/plugins/v4l2sink".source =
+      "${pkgs.obs-v4l2sink}/share/obs/obs-plugins/v4l2sink";
+
     # Set default browser
     pam.sessionVariables.BROWSER = "chromium";
     pam.sessionVariables.BROWSER_INCOGNITO = "chromium --incognito";
