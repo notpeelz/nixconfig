@@ -37,6 +37,7 @@ in {
       chromium firefox
       pavucontrol
       gimp
+      inkscape
       vlc
       qbittorrent
       virtmanager
