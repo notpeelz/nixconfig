@@ -41,6 +41,7 @@ in {
       vlc
       qbittorrent
       virtmanager
+      libreoffice
       obs-studio
       shutter spectacle peek
       screenkey
