@@ -181,10 +181,12 @@ in {
       uid = 1000;
       extraGroups = [
         "wheel"
+        "input"
         "docker"
         "libvirtd"
         "wireshark"
         "arduino"
+        "dialout"
       ];
       shell = pkgs.bash;
       initialHashedPassword = secrets.hashedPasswords.peelz;
@@ -207,6 +209,8 @@ in {
       my.social.enable = true;
 
       my.dev.enable = true;
+
+      my.hwdev.enable = true;
     } // (with config.services.xserver.displayManager.lightdm.greeters.gtk; {
       # Copy theme settings from lightdm
       gtk.theme = theme;
