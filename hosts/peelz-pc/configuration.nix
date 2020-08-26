@@ -227,6 +227,7 @@ in {
   my.gaming.enable = true;
   my.video.enable = true;
   my.virt.enable = true;
+  my.usbip.enable = true;
 
   # Nix store settings
   nix.optimise.automatic = true;
