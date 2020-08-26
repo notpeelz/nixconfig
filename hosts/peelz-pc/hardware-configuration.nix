@@ -28,40 +28,48 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/39070d14-7ea0-4d63-bb68-cca32d3dc0f4";
     fsType = "ext4";
+    options = [ "noatime" "nodiratime" ];
   };
 
   # EFI Boot loader
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/CF0D-9EA1";
     fsType = "vfat";
+    options = [ "noatime" "nodiratime" ];
   };
 
   # Other LVM partitions
   fileSystems."/mnt/steam" = {
     device = "/dev/disk/by-uuid/1e20e85c-b692-411f-aab5-66c19ecb2bf5";
     fsType = "ext4";
+    options = [ "noatime" "nodiratime" ];
   };
   fileSystems."/mnt/games" = {
     device = "/dev/disk/by-uuid/9df014e5-955d-4e3a-92b1-7750a4cd3ebc";
     fsType = "ext4";
+    options = [ "noatime" "nodiratime" ];
   };
 
   # Old NTFS volumes
   fileSystems."/mnt/echo" = {
     device = "/dev/disk/by-uuid/56362696362676E1";
     fsType = "ntfs-3g";
+    options = [ "noatime" "nodiratime" ];
   };
   fileSystems."/mnt/charlie" = {
     device = "/dev/disk/by-uuid/6EC886EBC886B0BF";
     fsType = "ntfs-3g";
+    options = [ "noatime" "nodiratime" ];
   };
   fileSystems."/mnt/delta" = {
     device = "/dev/disk/by-uuid/BC4080AD40807046";
     fsType = "ntfs-3g";
+    options = [ "noatime" "nodiratime" ];
   };
   fileSystems."/mnt/hotel" = {
     device = "/dev/disk/by-uuid/06804D92804D895F";
     fsType = "ntfs-3g";
+    options = [ "noatime" "nodiratime" ];
   };
 
   # PS3 controller
