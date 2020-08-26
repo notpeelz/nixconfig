@@ -21,14 +21,18 @@ in {
     # Udev rules
     services.udev.packages = with pkgs; [
       rtl-sdr
+      (writeTextDir "etc/udev/rules.d/49-micronucleus.rules" ''
+        SUBSYSTEMS=="usb", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0753", MODE:="0770", GROUP="arduino"
+        KERNEL=="ttyACM*", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="0753", MODE:="0770", ENV{ID_MM_DEVICE_IGNORE}="1", GROUP="arduino"
+      '')
+      (writeTextDir "etc/udev/rules.d/99-arduino.rules" ''
+        SUBSYSTEM=="tty", ATTRS{manufacturer}=="Arduino*", SYMLINK+="arduino%n", MODE="0770", GROUP="arduino"
+      '')
     ];
 
     # Arduino
     users.groups = {
       arduino = {};
     };
-    services.udev.extraRules = ''
-      SUBSYSTEM=="tty", ATTRS{manufacturer}=="Arduino*", SYMLINK+="arduino%n", MODE="0770", GROUP="arduino"
-    '';
   };
 }
