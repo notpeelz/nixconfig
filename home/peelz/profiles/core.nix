@@ -56,7 +56,6 @@ in {
     niv
     nixfmt
     nixpkgs-review
-    vulnix
     nix-query-tree-viewer
   ]);
 
