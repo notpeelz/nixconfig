@@ -58,6 +58,7 @@ in {
         enable = true;
         # Disable mouse acceleration
         accelProfile = "flat";
+        accelSpeed = "0";
         # Enable autoscrolling (middle mouse click)
         scrollMethod = "button";
         scrollButton = 2;
