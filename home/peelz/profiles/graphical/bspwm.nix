@@ -137,7 +137,7 @@ in {
   };
 
   config = mkIf cfg.enable (let
-    wmPkgs = with pkgs.pkgs-unstable; {
+    wmPkgs = {
       inherit (pkgs.pkgs-unstable)
         bspwm
         sxhkd # TODO: put this in its own module
