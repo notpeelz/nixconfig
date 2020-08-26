@@ -5,11 +5,11 @@ with lib;
   imports =
     let
       inherit (builtins) readDir;
-      modules = map (name: import (./. + "/${name}"))
-        (remove "default.nix"
-          (attrNames
-            (filterAttrs
-              (n: v: v == "directory" || hasSuffix ".nix" n)
-              (readDir ./.))));
+      modules = map
+        (name: import (./. + "/${name}"))
+        (attrNames (filterAttrs
+          (n: v: n != "default.nix" &&
+            (v == "directory" || hasSuffix ".nix" n))
+            (readDir ./.)));
     in modules;
 }
