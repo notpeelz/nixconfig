@@ -52,11 +52,14 @@ in {
     nix-index
     nix-du
     nix-universal-prefetch
-    nixos-eval-config
     niv
     nixfmt
     nixpkgs-review
     nix-query-tree-viewer
+
+    # Custom derivations
+    nixos-eval-config
+    whichpath
   ]);
 
   programs.fzf.enable = true;
