@@ -10,6 +10,7 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      audacity
       geda
       pcb
       gerbv
