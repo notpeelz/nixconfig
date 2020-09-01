@@ -10,7 +10,7 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = (with pkgs; [
-      irssi
+      weechat
     ]) ++ (optionals config.my.graphical.enable (with pkgs; [
       hexchat
       discord
