@@ -208,6 +208,8 @@ in {
 
       my.social.enable = true;
 
+      my.art.enable = false;
+
       my.dev.enable = true;
 
       my.hwdev.enable = true;
