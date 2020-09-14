@@ -60,6 +60,7 @@ in {
     # Custom derivations
     nixos-eval-config
     whichpath
+    fzfedit
   ]);
 
   programs.fzf.enable = true;
