@@ -14,5 +14,9 @@ in {
 
   config = mkIf cfg.enable {
     my.video.v4l2loopback.enable = mkDefault true;
+    networking.firewall.allowedTCPPorts = [
+      # RTMP
+      1935
+    ];
   };
 }
