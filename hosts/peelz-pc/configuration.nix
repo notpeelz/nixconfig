@@ -17,7 +17,7 @@ let
   secrets = import ../../data/load-secrets.nix;
 
   # This allows refering to packages from other channels.
-  # TODO: used pinned nixpkgs
+  # TODO: use pinned nixpkgs
   channelSources = {
     nixos-unstable = builtins.fetchTarball {
       url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
