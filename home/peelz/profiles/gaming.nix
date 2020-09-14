@@ -10,11 +10,17 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    home.packages = let
+      steam = (pkgs.steam.override (self: {
+        extraLibraries = pkgs: with pkgs; [
+          # Stardew Valley mods require GDI+
+          libgdiplus
+        ];
+      }));
+    in with pkgs; [
       lutris
-      # Fixes missing "Show game info" option; NixOS/nixpkgs#80184
-      # TODO: make this into an overlay
-      (steam.override (self: { extraLibraries = pkgs: [ lsof ]; }))
+      steam
+      steam.run
       multimc
     ];
 
