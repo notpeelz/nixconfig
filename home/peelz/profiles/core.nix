@@ -6,7 +6,7 @@ let
 
   # Replace interactive bash shells with zsh
   bashrc = pkgs.writeText "bashrc" ''
-    [[ "$-" == *i* && -z "$IN_NIX_SHELL" ]] && exec "${pkgs.zsh}/bin/zsh"
+    [[ "$-" == *i* && "$IN_NIX_SHELL" != "pure" ]] && exec "${pkgs.zsh}/bin/zsh"
   '';
 in {
   home.packages = essential-pkgs ++ (with pkgs.pkgs-unstable; [
