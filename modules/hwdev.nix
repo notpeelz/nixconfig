@@ -11,10 +11,14 @@ in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; ([
       rtl-sdr
+      bluez-tools
     ] ++ (optionals config.services.xserver.enable [
       gqrx
       saleae-logic
     ]));
+
+    # Enable bluetooth support
+    hardware.bluetooth.enable = true;
 
     # Prevents the RTL2832U from loading the DVB-T kernel module
     boot.blacklistedKernelModules = [ "dvb_usb_rtl28xxu" ];
