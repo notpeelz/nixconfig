@@ -185,7 +185,7 @@ in {
         "docker"
         "libvirtd"
         "wireshark"
-        "arduino"
+        "hwdev"
         "dialout"
       ];
       shell = pkgs.bash;
