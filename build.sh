@@ -9,4 +9,9 @@ if [[ ! -f "$hostcfg" ]]; then
   exit 1
 fi
 
-nixos-rebuild -I "nixpkgs=$nixcfg/sources/nixpkgs" -I "nixos-config=$nixcfg/hosts/$host/configuration.nix" "$@"
+echo "{ cfg = \"$nixcfg\"; host = \"$host\"; }" > "$nixcfg/hosts/$host/.nixpath.nix"
+
+nixos-rebuild \
+  -I "nixpkgs=$nixcfg/sources/nixpkgs" \
+  -I "nixos-config=$nixcfg/hosts/$host/configuration.nix" \
+  "$@"

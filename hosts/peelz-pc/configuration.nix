@@ -229,4 +229,12 @@ in {
   nix.optimise.automatic = true;
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 8d";
+
+  # Set nix path for convenience
+  nix.nixPath = let
+    nixpath = import ./.nixpath.nix;
+  in [
+    "nixpkgs=${nixpath.cfg}/sources/nixpkgs"
+    "nixos-config=${nixpath.cfg}/hosts/${nixpath.host}/configuration.nix"
+  ];
 }
