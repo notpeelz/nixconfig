@@ -10,6 +10,7 @@ pkgs: with pkgs; [
   dfc
   dnsutils
   usbutils
+  pciutils
   dmidecode
   lshw ethtool
   hdparm testdisk gptfdisk
