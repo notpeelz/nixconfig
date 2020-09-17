@@ -17,15 +17,9 @@ let
   secrets = import ../../data/load-secrets.nix;
 
   # This allows refering to packages from other channels.
-  # TODO: use pinned nixpkgs
   channelSources = {
-    nixos-unstable = builtins.fetchTarball {
-      url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
-    };
-
-    home-manager = builtins.fetchTarball {
-      url = "https://github.com/rycee/home-manager/archive/release-20.03.tar.gz";
-    };
+    nixos-unstable = ../../sources/nixos-unstable;
+    home-manager = ../../sources/home-manager;
   };
 
   pkgs-unstable = import channelSources.nixos-unstable {
