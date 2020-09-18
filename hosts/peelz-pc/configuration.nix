@@ -179,6 +179,7 @@ in {
         "docker"
         "libvirtd"
         "wireshark"
+        "usbmon"
         "hwdev"
         "dialout"
       ];
