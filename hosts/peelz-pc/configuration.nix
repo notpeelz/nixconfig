@@ -86,6 +86,10 @@ in {
     dhcpConfig.UseDNS = false;
   };
 
+  # Enable avahi (mDNS)
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
+
   # Time zone
   time.timeZone = "America/Montreal";
 
