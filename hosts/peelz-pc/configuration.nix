@@ -63,9 +63,11 @@ in {
   networking.hostName = "peelz-pc";
 
   # Enable DHCP
+  networking.useDHCP = false;
   networking.interfaces.enp5s0.useDHCP = true;
   networking.interfaces.enp4s0.useDHCP = true;
-  networking.enableIPv6 = false;
+
+  # Use Cloudflare DNS servers
   networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
 
   # Time zone
