@@ -3,22 +3,13 @@
 
 with builtins;
 with lib;
-let channelSources' = channelSources;
-in let
+let
   # Creates a list of overlays from the files in a directory
   makeOverlays = overlayRoot:
     let
       overlays = map (name: import (overlayRoot + "/${name}"))
         (attrNames (readDir overlayRoot));
     in overlays;
-
-  # Use sources from the host if possible, otherwise fall back to the latest
-  # upstream rev
-  channelSources = {
-    nixos-unstable = fetchTarball {
-      url = "https://github.com/NixOS/nixpkgs-channels/archive/nixos-unstable.tar.gz";
-    };
-  } // channelSources';
 
   pkgs-unstable = import channelSources.nixos-unstable {
     inherit (config.nixpkgs) config;

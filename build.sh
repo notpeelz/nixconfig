@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 
 nixcfg="$(realpath "$(dirname "$0")")"
-host="$(hostname)"
-hostcfg="$nixcfg/hosts/$host/configuration.nix"
+host="$nixcfg/hosts/$(hostname)"
+hostcfg="$host/configuration.nix"
+nixpkgs_src="$host/sources/nixpkgs.nix"
 
 if [[ ! -f "$hostcfg" ]]; then
-  echo "host config not found: $host"
+  echo "host config not found: $hostcfg"
   exit 1
 fi
 
-echo "{ cfg = \"$nixcfg\"; host = \"$host\"; }" > "$nixcfg/hosts/$host/.nixpath.nix"
+nixpkgs="$(nix-instantiate --eval -E "import $nixpkgs_src" | sed 's/^"\(.*\)"$/\1/')"
+
+echo "{ nixpkgs = \"$nixpkgs\"; hostcfg = \"$hostcfg\"; }" > "$host/.nixpath.nix"
 
 nixos-rebuild \
-  -I "nixpkgs=$nixcfg/sources/nixpkgs" \
-  -I "nixos-config=$nixcfg/hosts/$host/configuration.nix" \
+  -I "nixpkgs=$nixpkgs" \
+  -I "nixos-config=$hostcfg" \
   "$@"

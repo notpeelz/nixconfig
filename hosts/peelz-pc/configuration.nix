@@ -18,8 +18,8 @@ let
 
   # This allows refering to packages from other channels.
   channelSources = {
-    nixos-unstable = ../../sources/nixos-unstable;
-    home-manager = ../../sources/home-manager;
+    nixos-unstable = import ./sources/nixos-unstable.nix;
+    home-manager = import ./sources/home-manager.nix;
   };
 
   pkgs-unstable = import channelSources.nixos-unstable {
@@ -38,6 +38,9 @@ in {
   # servers. You should change this only after NixOS release notes say you
   # should.
   system.stateVersion = "20.03";
+
+  # Prevent <nixpkgs> from getting garbage-collected
+  system.extraDependencies = [ (import ./sources/nixpkgs.nix) ];
 
   # Allow non-free software
   nixpkgs.config.allowUnfree = true;
@@ -257,7 +260,7 @@ in {
   nix.nixPath = let
     nixpath = import ./.nixpath.nix;
   in [
-    "nixpkgs=${nixpath.cfg}/sources/nixpkgs"
-    "nixos-config=${nixpath.cfg}/hosts/${nixpath.host}/configuration.nix"
+    "nixpkgs=${nixpath.nixpkgs}"
+    "nixos-config=${nixpath.hostcfg}"
   ];
 }
