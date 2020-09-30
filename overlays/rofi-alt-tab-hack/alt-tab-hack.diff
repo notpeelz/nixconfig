@@ -1,0 +1,14 @@
+diff --git a/source/xcb.c b/source/xcb.c
+index 249069f5..efd3cb93 100644
+--- a/source/xcb.c
++++ b/source/xcb.c
+@@ -908,6 +908,9 @@ static void main_loop_x11_event_handler_view ( xcb_generic_event_t *event )
+         xcb_key_release_event_t *xkre = (xcb_key_release_event_t *) event;
+         xcb->last_timestamp = xkre->time;
+         nk_bindings_seat_handle_key ( xcb->bindings_seat, NULL, xkre->detail, NK_BINDINGS_KEY_STATE_RELEASE );
++        if (xkre->detail == 0x40) {
++          rofi_view_trigger_action(NULL, SCOPE_GLOBAL, ACCEPT_ENTRY);
++        }
+         break;
+     }
+     default:
