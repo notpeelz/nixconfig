@@ -16,6 +16,7 @@ pkgs: with pkgs; [
   hdparm testdisk gptfdisk
   psmisc # pstree, fuser
   e2fsprogs dosfstools
+  smartmontools
   dos2unix
   hexdump xxd
   binutils
