@@ -58,7 +58,7 @@ in {
       enable = true;
       devices = [ "nodev" ];
       efiSupport = true;
-      useOSProber = true;
+      useOSProber = false;
     };
   };
 
