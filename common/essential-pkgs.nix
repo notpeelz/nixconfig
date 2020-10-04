@@ -17,6 +17,7 @@ pkgs: with pkgs; [
   psmisc # pstree, fuser
   e2fsprogs dosfstools
   smartmontools
+  parted
   dos2unix
   hexdump xxd
   binutils
