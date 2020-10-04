@@ -72,11 +72,6 @@
     options = [ "noatime" "nodiratime" ];
   };
 
-  # PS3 controller
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0268", MODE="0660", TAG+="uaccess"
-  '';
-
   swapDevices = [ ];
 
   nix.maxJobs = lib.mkDefault 24;

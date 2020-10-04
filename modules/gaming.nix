@@ -21,5 +21,11 @@ in {
 
     # Enable direct rendering for 32-bit applications (steam, wine, etc.)
     hardware.opengl.driSupport32Bit = true;
+
+    services.udev.packages = with pkgs; [
+      (writeTextDir "etc/udev/rules.d/99-ps3-controller.rules" ''
+        KERNEL=="hidraw*", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0268", MODE="0660", TAG+="uaccess"
+      '')
+    ];
   };
 }
