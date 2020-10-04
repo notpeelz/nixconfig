@@ -62,21 +62,27 @@ in {
     };
   };
 
-  # Set hostname
-  networking.hostName = "peelz-pc";
+  # Network settings
+  networking = {
+    hostName = "peelz-pc";
+    usePredictableInterfaceNames = true;
 
-  # Enable DHCP
-  networking.useDHCP = false;
-  networking.interfaces.enp5s0.useDHCP = true;
-  networking.interfaces.enp4s0.useDHCP = true;
+    # Enable DHCP
+    useDHCP = false;
+    interfaces.enp5s0.useDHCP = true;
+    interfaces.enp4s0.useDHCP = true;
 
-  # Use Cloudflare DNS servers
-  networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+    # Use Cloudflare DNS servers
+    nameservers = [ "1.1.1.1" "1.0.0.1" ];
 
-  # Enable the experimental networkd implementation
-  networking.useNetworkd = true;
-  # services.resolved.enable = true; # enabled by networkd
-  services.resolved.fallbackDns = [ ];
+    # Enable the experimental networkd implementation
+    useNetworkd = true;
+  };
+
+  services.resolved = lib.mkIf config.networking.useNetworkd {
+    # enable = true; # enabled by useNetworkd
+    fallbackDns = [ ];
+  };
 
   # This unit hangs when switching to a new config
   systemd.suppressedSystemUnits = [ "systemd-networkd-wait-online.service" ];
