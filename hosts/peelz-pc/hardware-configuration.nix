@@ -4,7 +4,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix> ];
+  imports = [
+    ((import ./sources/nixpkgs.nix) + "/nixos/modules/installer/scan/not-detected.nix")
+  ];
 
   # Hardware
   hardware.cpu.amd.updateMicrocode = true;
