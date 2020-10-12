@@ -59,6 +59,7 @@ in {
       devices = [ "nodev" ];
       efiSupport = true;
       useOSProber = false;
+      gfxmodeEfi = "3440x1440";
     };
   };
 
