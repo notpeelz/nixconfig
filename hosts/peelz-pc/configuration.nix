@@ -60,6 +60,13 @@ in {
       efiSupport = true;
       useOSProber = false;
       gfxmodeEfi = "3440x1440";
+      extraEntries = ''
+        menuentry "Windows 10" {
+          insmod search_fs_uuid
+          search --no-floppy --set=root --fs-uuid CF0D-9EA1
+          chainloader ($root)/EFI/Microsoft/Boot/bootmgfw.efi
+        }
+      '';
     };
   };
 
