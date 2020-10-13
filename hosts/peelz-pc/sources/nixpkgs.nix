@@ -1,6 +1,6 @@
 # remote https://github.com/NixOS/nixpkgs-channels
 # branch nixos-20.03
 fetchTarball {
-  url = "https://github.com/NixOS/nixpkgs-channels/archive/ad246fb8745827a02fbe0972c2b09c0051172911.tar.gz";
-  sha256 = "022nmw6k9d58fqqjd40y2fjakdnnw9xmzpvl0i2q1ja1pdknlr3h";
+  url = "https://github.com/NixOS/nixpkgs-channels/archive/08d429920bcb2dba1d47c93e5ed30d0f92838c89.tar.gz";
+  sha256 = "0rzf3ln6gmn1dxjz2xx4bkzqhjsdpj54vssablvhq9k9d71hz0fz";
 }
