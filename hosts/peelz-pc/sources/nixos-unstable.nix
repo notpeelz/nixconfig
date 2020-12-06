@@ -1,6 +1,6 @@
-# remote https://github.com/NixOS/nixpkgs-channels
+# remote https://github.com/NixOS/nixpkgs
 # branch nixos-unstable
 fetchTarball {
-  url = "https://github.com/NixOS/nixpkgs-channels/archive/84d74ae9c9cbed73274b8e4e00be14688ffc93fe.tar.gz";
-  sha256 = "0ww70kl08rpcsxb9xdx8m48vz41dpss4hh3vvsmswll35l158x0v";
+  url = "https://github.com/NixOS/nixpkgs/archive/296793637b22bdb4d23b479879eba0a71c132a66.tar.gz";
+  sha256 = "0j09yih9693w5vjx64ikfxyja1ha7pisygrwrpg3wfz3sssglg69";
 }
