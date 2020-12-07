@@ -58,6 +58,7 @@ in {
       };
 
       Service = {
+        EnvironmentFile = "%h/.xsession_env";
         Environment = lib.attrValues (lib.mapAttrs
           (k: v: "${k}=${escapeShellArg v}")
           (cfg.envVars // {
