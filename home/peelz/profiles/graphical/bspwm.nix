@@ -132,15 +132,14 @@ in {
     };
     rules = mkOption {
       type = types.listOf ruleSubmodule;
-      default = [ ];
+      default = [];
     };
   };
 
   config = mkIf cfg.enable (let
     wmPkgs = {
-      inherit (pkgs.pkgs-unstable)
+      inherit (pkgs)
         bspwm
-        sxhkd # TODO: put this in its own module
         nitrogen;
     };
   in {
@@ -157,8 +156,10 @@ in {
     # ${pkgs.xidlehook}/bin/xidlehook --timer primary 320 '${pkgs.dm-tool}/bin/dm-tool lock' \'\'
 
     # Set up window manager
-    xsession.windowManager.command = let
-      bspwm = "${wmPkgs.bspwm}/bin/bspwm";
+    xsession.windowManager.command = ''
+      systemctl --user start bspwm --wait
+    '';
+    systemd.user.services.bspwm = let
       bspc = "${wmPkgs.bspwm}/bin/bspc";
       bspwmrc = pkgs.writeShellScript "bspwmrc" (concatStringsSep "\n" [
         # Monitor and desktop configuration
@@ -221,14 +222,14 @@ in {
         # Rules
         (let
          formatAttrs = rule:
-          concatStringsSep " " (attrValues
-            (mapAttrs
-              (n: v:
-                if isAttrs v && hasAttr "_tostring" v
-                then "${n}=${v._tostring v}" else "${n}=${toString v}")
-              (filterAttrs
-                (n: v: v != null && n != "name" && !(hasPrefix "_" n))
-                rule)));
+           concatStringsSep " " (attrValues
+             (mapAttrs
+               (n: v:
+                 if isAttrs v && hasAttr "_tostring" v
+                 then "${n}=${v._tostring v}" else "${n}=${toString v}")
+               (filterAttrs
+                 (n: v: v != null && n != "name" && !(hasPrefix "_" n))
+                 rule)));
          formatRule = rule:
            "${bspc} rule -a ${rule.name} ${formatAttrs rule}";
          rules = concatStringsSep "\n"
@@ -243,16 +244,29 @@ in {
 
           # Adopt previous windows
           ${bspc} wm --adopt-orphans
-
-          # TODO: put this in its own module
-          BSPWM_GAP=${escapeShellArg cfg.window_gap} SXHKD_SHELL=bash sxhkd -m -1 -c ~/.sxhkdrc &
         ''
       ]);
-    in ''
-      # TODO: put this in a user service
-      # TODO: support restarting/reloading config
-      ${bspwm} -c ${bspwmrc}
-    '';
+    in {
+      Unit = {
+        Description = "bspwm";
+        After = [ "graphical-session-pre.target" ];
+        # PartOf = [ "graphical-session.target" ];
+        X-RestartIfChanged = true;
+      };
+
+      Service = {
+        ExecStart = "${wmPkgs.bspwm}/bin/bspwm -c ${bspwmrc}";
+        Restart = "on-failure";
+      };
+    };
+
+    my.graphical.services.sxhkd = {
+      enable = true;
+      envVars = {
+        PATH = lib.makeBinPath [ wmPkgs.bspwm ];
+        BSPWM_GAP = cfg.window_gap;
+      };
+    };
 
     # Compositor
     services.picom = {

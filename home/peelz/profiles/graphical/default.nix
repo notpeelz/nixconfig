@@ -8,6 +8,7 @@ in {
   imports = [
     ./nvidia.nix
     ./bspwm.nix
+    ./sxhkd.nix
   ];
 
   options.my.graphical = {
