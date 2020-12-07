@@ -71,6 +71,8 @@ in {
             SXHKD_SHELL = "bash";
           }));
         ExecStart = "${pkgs.sxhkd}/bin/sxhkd -m -1 -c ${sxhkdrc}";
+        # Prevent killing child processes when restarting sxhkd
+        KillMode = "process";
         Restart = "on-failure";
       };
     };
