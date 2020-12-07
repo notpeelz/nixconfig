@@ -17,7 +17,7 @@ let
 in {
   options.my.graphical.services.sxhkd = {
     enable = mkEnableOption "X hotkey daemon";
-    envVars = lib.mkOption {
+    envVars = mkOption {
       type = types.attrs;
       internal = true;
       default = {};
@@ -25,7 +25,11 @@ in {
         Environment variables passed to sxhkd and its config.
       '';
     };
-    hotkeys = lib.mkOption {
+    extraPath = mkOption {
+      type = types.envVar;
+      default = "";
+    };
+    hotkeys = mkOption {
       type = types.listOf hotkeySubmodule;
       default = [];
     };
@@ -58,10 +62,8 @@ in {
           (cfg.envVars // {
             PATH =
               (lib.optionalString
-                (cfg.envVars ? PATH
-                  && cfg.envVars.PATH != null
-                  && cfg.envVars.PATH != "")
-                "${cfg.envVars.PATH}:")
+                (cfg.extraPath != null && cfg.extraPath != "")
+                "${cfg.extraPath}:")
               + (lib.makeBinPath (with pkgs; [
                 # required for sxhkd to execute commands
                 bash

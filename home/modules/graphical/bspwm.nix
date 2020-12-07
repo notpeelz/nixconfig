@@ -261,8 +261,8 @@ in {
     };
 
     my.graphical.services.sxhkd = {
+      extraPath = lib.makeBinPath [ wmPkgs.bspwm ];
       envVars = {
-        PATH = lib.makeBinPath [ wmPkgs.bspwm ];
         BSPWM_GAP = cfg.window_gap;
       };
     };
