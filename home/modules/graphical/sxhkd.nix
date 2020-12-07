@@ -52,6 +52,7 @@ in {
     in {
       Unit = {
         Description = "X hotkey daemon";
+        After = [ "graphical-session-pre.target" ];
         PartOf = [ "graphical-session.target" ];
         X-RestartIfChanged = true;
       };
@@ -74,6 +75,10 @@ in {
         # Prevent killing child processes when restarting sxhkd
         KillMode = "process";
         Restart = "on-failure";
+      };
+
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
       };
     };
   };
