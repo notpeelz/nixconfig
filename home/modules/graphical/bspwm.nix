@@ -100,7 +100,7 @@ in {
     };
     block_fullscreen = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
     };
     split_ratio = mkOption {
       type = types.float;
@@ -112,11 +112,11 @@ in {
     };
     window_gap = mkOption {
       type = types.ints.unsigned;
-      default = 12;
+      default = 0;
     };
     border_width = mkOption {
       type = types.ints.unsigned;
-      default = 4;
+      default = 2;
     };
     colors.normal = mkOption {
       type = types.str;
@@ -261,7 +261,6 @@ in {
     };
 
     my.graphical.services.sxhkd = {
-      enable = true;
       envVars = {
         PATH = lib.makeBinPath [ wmPkgs.bspwm ];
         BSPWM_GAP = cfg.window_gap;

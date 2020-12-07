@@ -7,8 +7,8 @@ let
 in {
   imports = [
     ./nvidia.nix
-    ./bspwm.nix
-    ./sxhkd.nix
+    ../../../modules/graphical/bspwm.nix
+    ../../../modules/graphical/sxhkd.nix
   ];
 
   options.my.graphical = {
@@ -16,7 +16,20 @@ in {
   };
 
   config = mkIf cfg.enable {
-    my.graphical.wm.bspwm.enable = mkDefault true;
+    my.graphical.wm.bspwm = {
+      enable = true;
+      window_gap = 12;
+      block_fullscreen = true;
+      border_width = 4;
+      colors = {
+        normal = "#30302f";
+        active = "#9e8e7e";
+        focused = "#906ef5";
+      };
+    };
+    my.graphical.services.sxhkd = {
+      enable = true;
+    };
 
     # Packages
     home.packages = (with pkgs.pkgs-unstable; [
