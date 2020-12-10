@@ -3,6 +3,7 @@ pkgs: with pkgs; [
   curl wget
   git
   jq gnugrep gnused gawk
+  ncurses
   gnutar xz zip unzip p7zip unrar
   coreutils binutils diffutils findutils utillinux
   lm_sensors
