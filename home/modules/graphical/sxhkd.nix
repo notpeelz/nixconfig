@@ -2,7 +2,6 @@
 
 with lib;
 let
-  notNullOrEmpty = s: !(s == null || s == "");
   cfg = config.my.graphical.services.sxhkd;
   hotkeySubmodule = types.submodule {
     options = {
@@ -16,7 +15,14 @@ let
   };
 in {
   options.my.graphical.services.sxhkd = {
-    enable = mkEnableOption "X hotkey daemon";
+    enable = mkEnableOption "simple X hotkey daemon";
+    shell = mkOption {
+      type = types.str;
+      default = "${pkgs.bash}/bin/bash";
+      description = ''
+        The shell to use for executing commands.
+      '';
+    };
     envVars = mkOption {
       type = types.attrs;
       internal = true;
@@ -39,38 +45,88 @@ in {
     home.packages = with pkgs; [ sxhkd ];
 
     systemd.user.services.sxhkd = let
-      sxhkdrc = pkgs.writeText "sxhkdrc" (let
-        formatBinding = binding:
-          let
-            cmd = if builtins.isString binding.cmd && stringLength binding.cmd >= 512
-              then pkgs.writeShellScript "shxkd-hotkey-cmd" binding.cmd
-              else binding.cmd;
-          in "${binding.hotkey}\n  ${cmd}";
-        hotkeys = concatStringsSep "\n\n"
-          (map formatBinding cfg.hotkeys);
-      in hotkeys);
+      sxhkdrc = let
+        sxhkdConfig = let
+          buildInputs = with pkgs; [
+            python3
+          ];
+        in pkgs.runCommand "sxhkd-config" {
+          # structuredAttrs would be nice here, but we can do without it
+          # __structuredAttrs = true;
+          hotkeys = let
+            mkScript = i: { hotkey, ... }: pkgs.writeTextFile {
+              name = "sxhkd-raw-hotkey-${toString i}";
+              executable = false;
+              text = hotkey;
+            };
+          in imap0 mkScript cfg.hotkeys;
+          scripts = let
+            mkScript = i: { cmd, ... }: pkgs.writeTextFile {
+              name = "sxhkd-raw-script-${toString i}";
+              executable = false;
+              text = cmd;
+            };
+          in imap0 mkScript cfg.hotkeys;
+        } ''
+          export PATH=${lib.escapeShellArg (lib.makeBinPath buildInputs)}''${PATH:+':'}"$PATH"
+
+          hotkeysArray=($hotkeys)
+          scriptsArray=($scripts)
+          mkdir -p $out
+
+          hotkeyCount="''${#hotkeysArray[@]}"
+          numberOfDigits="''${#hotkeyCount}"
+          for i in "''${!hotkeysArray[@]}"; do
+            cd $out
+
+            hkdir="hotkey-$(printf "%0''${numberOfDigits}d" "$i")"
+            mkdir -p $hkdir
+
+            cd $hkdir
+            python3 ${./split_sxhkd_hotkey.py} \
+              3< "''${hotkeysArray[i]}" \
+              4< "''${scriptsArray[i]}"
+            retval=$?
+            if [[ $retval -ne 0 ]]; then
+              echo -e "failed processing sxhkd hotkey\n  ''${hotkeysArray[i]}\n  ''${scriptsArray[i]}"
+              exit $retval
+            fi
+
+            for f in *.sh; do
+              [[ -z "$f" ]] && continue
+              [[ ! -f "$f" ]] && continue
+              # extract the hotkey
+              sed 's/^# //;3q;d' "$f" >> $out/sxhkdrc
+              # indentation
+              echo -n '  ' >> $out/sxhkdrc
+              # script to execute
+              echo "$PWD/$f" >> $out/sxhkdrc
+              echo >> $out/sxhkdrc
+            done
+          done
+        '';
+      in "${sxhkdConfig}/sxhkdrc";
     in {
       Unit = {
         Description = "X hotkey daemon";
         After = [ "graphical-session-pre.target" ];
         PartOf = [ "graphical-session.target" ];
-        X-RestartIfChanged = true;
       };
 
       Service = {
-        EnvironmentFile = "%h/.xsession_env";
+        # EnvironmentFile = "%h/.xsession_env";
         Environment = lib.attrValues (lib.mapAttrs
           (k: v: "${k}=${escapeShellArg v}")
           (cfg.envVars // {
-            PATH =
-              (lib.optionalString
-                (cfg.extraPath != null && cfg.extraPath != "")
-                "${cfg.extraPath}:")
-              + (lib.makeBinPath (with pkgs; [
-                # required for sxhkd to execute commands
-                bash
-              ]));
-            SXHKD_SHELL = "bash";
+            PATH = makeBinPath [
+              config.home.profileDirectory
+              pkgs.bash
+            ] + (lib.optionalString (cfg.extraPath != "") ":")
+              + "${cfg.extraPath}";
+            # Not technically necessary since we're wrapping every command in
+            # a separate bash script... but at least it means we're not
+            # implicitly relying on bourne shell.
+            SXHKD_SHELL = cfg.shell;
           }));
         ExecStart = "${pkgs.sxhkd}/bin/sxhkd -m -1 -c ${sxhkdrc}";
         # Prevent killing child processes when restarting sxhkd

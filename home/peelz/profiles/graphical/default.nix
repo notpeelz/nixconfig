@@ -2,11 +2,11 @@
 
 with lib;
 let
-  hmSrc = pkgs.channelSources.home-manager;
   cfg = config.my.graphical;
 in {
   imports = [
     ./nvidia.nix
+    ./hotkeys.nix
     ../../../modules/graphical/bspwm.nix
     ../../../modules/graphical/sxhkd.nix
   ];
@@ -26,9 +26,6 @@ in {
         active = "#9e8e7e";
         focused = "#906ef5";
       };
-    };
-    my.graphical.services.sxhkd = {
-      enable = true;
     };
 
     # Packages
@@ -128,11 +125,10 @@ in {
       "${pkgs.obs-v4l2sink}/share/obs/obs-plugins/v4l2sink";
 
     # Set default browser
-    pam.sessionVariables.BROWSER = "chromium";
-    pam.sessionVariables.BROWSER_INCOGNITO = "chromium --incognito";
+    pam.sessionVariables.BROWSER = "${pkgs.chromium}/bin/chromium";
 
     # Set default terminal
-    pam.sessionVariables.TERMINAL = "kitty";
+    pam.sessionVariables.TERMINAL = "${pkgs.kitty}/bin/kitty";
 
     # Map caps to hyper
     home.keyboard.options = [ "caps:hyper" ];

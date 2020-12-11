@@ -46,7 +46,6 @@ in {
     git-crypt
     pandoc
     fortune
-    imagemagick
 
     # Nix utils
     nix-index
