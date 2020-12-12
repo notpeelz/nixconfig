@@ -77,4 +77,7 @@
   swapDevices = [ ];
 
   nix.maxJobs = lib.mkDefault 24;
+
+  # Set the CPU frequency scaling to performance mode
+  powerManagement.cpuFreqGovernor = "performance";
 }
