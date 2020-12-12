@@ -81,7 +81,9 @@ in {
       gnome3.file-roller
 
       # Fonts
-      nerdfonts # FIXME: this package is MASSIVE
+      (nerdfonts.override (old: {
+        fonts = [ "SourceCodePro" ];
+      }))
     ]);
 
     my.graphical.wm.bspwm.rules = [{
