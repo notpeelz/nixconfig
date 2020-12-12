@@ -21,6 +21,7 @@ in {
       lutris
       steam
       steam.run
+      protontricks
       multimc
     ];
 
