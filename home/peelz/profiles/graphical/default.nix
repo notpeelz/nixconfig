@@ -145,6 +145,9 @@ in {
     # Set default terminal
     pam.sessionVariables.TERMINAL = "${pkgs.kitty}/bin/kitty";
 
+    # Use the Canadian Multilingual Standard layout
+    home.keyboard.layout = "ca(multi)";
+
     # Map caps to hyper
     home.keyboard.options = [ "caps:hyper" ];
 
