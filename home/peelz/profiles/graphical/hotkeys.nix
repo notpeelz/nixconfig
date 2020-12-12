@@ -9,6 +9,7 @@ with lib;
       coreutils
       gawk
       gnused
+      lightdm
       pulseaudio
       alsaUtils
       playerctl
