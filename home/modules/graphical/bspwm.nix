@@ -156,14 +156,11 @@ in {
     # ${pkgs.xidlehook}/bin/xidlehook --timer primary 320 '${pkgs.dm-tool}/bin/dm-tool lock' \'\'
 
     # Set up window manager
-    # xsession.windowManager.command = ''
-    #   env > ~/.xsession_env
-    #   chmod 600 ~/.xsession_env
-    #   systemctl --user start bspwm --wait
-    #   rm -f ~/.xsession_env
-    # '';
     xsession.windowManager.command = ''
+      env > ~/.xsession_env
+      chmod 600 ~/.xsession_env
       systemctl --user start bspwm --wait
+      rm -f ~/.xsession_env
     '';
     systemd.user.services.bspwm = let
       bspc = "${wmPkgs.bspwm}/bin/bspc";

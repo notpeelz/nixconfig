@@ -114,11 +114,17 @@ in {
       };
 
       Service = {
-        # EnvironmentFile = "%h/.xsession_env";
+        # Inherit the session env vars
+        EnvironmentFile = "%h/.xsession_env";
+        # These override the env vars that were set at session startup
+        # through .xsession_env
         Environment = lib.attrValues (lib.mapAttrs
           (k: v: "${k}=${escapeShellArg v}")
           (cfg.envVars // {
             PATH = makeBinPath [
+              # This is important! If we don't have this, the PATH from
+              # .xsession_env would never get updated when switching
+              # configuration
               config.home.profileDirectory
               pkgs.bash
             ] + (lib.optionalString (cfg.extraPath != "") ":")

@@ -45,6 +45,7 @@ in {
           # Enable my.graphical for the user if it's enabled on the host
           (optionalAttrs config.my.graphical.enable {
             my.graphical.enable = mkDefault true;
+            my.graphical.xorg.enable = mkDefault config.services.xserver.enable;
           })
           # Merge user-specific overrides with global overrides
           (recursiveUpdate cfg.globalOverrides v.overrides)

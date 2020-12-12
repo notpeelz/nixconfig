@@ -5,6 +5,7 @@ let
   cfg = config.my.graphical;
 in {
   imports = [
+    ./xorg.nix
     ./nvidia.nix
   ];
 
@@ -37,22 +38,9 @@ in {
         manager = "desktop";
         name = "xsession";
         start = ''
-            exec "$HOME/.xsession"
+          exec "$HOME/.xsession"
         '';
       };
-
-      # FIXME: add numlockx to systemd.user.services.setxkbmap.Service
-      #        in profiles/graphical
-      displayManager.setupCommands = ''
-        # Enable numlock
-        ${pkgs.numlockx}/bin/numlockx on
-
-        # Set keyboard repeat delay/rate
-        ${pkgs.xorg.xset}/bin/xset r rate 300 50
-
-        # Turn off monitors after 5 minutes of inactivity
-        ${pkgs.xorg.xset}/bin/xset s 300 300 -dpms
-      '';
 
       libinput = {
         enable = true;

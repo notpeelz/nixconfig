@@ -7,6 +7,7 @@ in {
   imports = [
     ./nvidia.nix
     ./hotkeys.nix
+    ../../../modules/graphical/xorg.nix
     ../../../modules/graphical/bspwm.nix
     ../../../modules/graphical/sxhkd.nix
   ];
@@ -16,6 +17,18 @@ in {
   };
 
   config = mkIf cfg.enable {
+    my.graphical.xorg = {
+      autorepeat = {
+        delay = 300;
+        rate = 50;
+      };
+      screensaver = {
+        enable = true;
+        delay = 300;
+        dpms = false;
+      };
+    };
+
     my.graphical.wm.bspwm = {
       enable = true;
       window_gap = 12;
