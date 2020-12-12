@@ -198,9 +198,11 @@ in {
           name = "Arc";
         };
         cursorTheme = {
-          package = pkgs.capitaine-cursors;
+          package = pkgs.capitaine-cursors.overrideAttrs ({ buildPhase, ... }: {
+            buildPhase = replaceStrings ["--max-dpi xhd"] ["--max-dpi xxxhd"] buildPhase;
+          });
           name = "capitaine-cursors";
-          size = 40;
+          size = 50;
         };
       };
     };
