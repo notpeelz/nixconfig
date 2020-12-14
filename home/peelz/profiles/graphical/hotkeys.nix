@@ -88,24 +88,24 @@ with lib;
         hotkey = "hyper + F{1-9}";
         cmd = ''
           cur="$(bspc query --names -D -d)"
-          ((cur >= 10)) && flag="-f" flag="-a"
-          bspc desktop $flag {10,11,12,13,14,15,16,17,18}
+          ((cur >= 10)) && flag="-f" || flag="-a"
+          bspc desktop $flag {10-18}
         '';
       }
 
       # Switch desktop on current monitor
       {
-        hotkey = "hyper + d : {1,2,3,4,5,6,7,8,9}";
+        hotkey = "hyper + d : {1-9}";
         cmd = ''
-          cur="$(bspc query --names -D -d)"; \
-          bspc desktop -f $(( (cur >= 10 ? 10 : 0) + {0,1,2,3,4,5,6,7,8} ))
+          cur="$(bspc query --names -D -d)";
+          bspc desktop -f $(( (cur >= 10 ? 10 : 0) + {0-8} ))
         '';
       }
 
       # Move window to desktop
       {
-        hotkey = "hyper + shift + {_,F}{1,2,3,4,5,6,7,8,9}";
-        cmd = "bspc node focused -d {_,1}{0,1,2,3,4,5,6,7,8} --follow";
+        hotkey = "hyper + shift + {_,F}{1-9}";
+        cmd = "bspc node focused -d {_,1}{0-8} --follow";
       }
 
       # Resize window

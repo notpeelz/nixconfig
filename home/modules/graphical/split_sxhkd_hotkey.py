@@ -7,7 +7,7 @@ openingRegexp = re.compile(r"(\\*)({)")
 closingRegexp = re.compile(r"(\\*)(})")
 separatorRegexp = re.compile(r"(\\*)(,)")
 escapeRegexp = re.compile(r"(\\+)(?:(.)|$)")
-rangeRegexp = re.compile(r"^(?:[A-Za-z]-[a-z]|[A-Z]-[A-Z]|[0-9]-[0-9])$")
+rangeRegexp = re.compile(r"^(?:([A-Za-z])-([a-z])|([A-Z])-([A-Z])|([0-9]+)-([0-9]+))$")
 
 PART_LITERAL = 0
 PART_GROUP = 1
@@ -151,15 +151,39 @@ def parseVariant(variant):
         return [""]
 
     # keysym ranges
-    if rangeRegexp.match(variant):
+    match = rangeRegexp.match(variant)
+    if match:
         values = []
-        begin = variant[0]
-        end = variant[2]
-        if ord(begin) > ord(end):
-            raise Exception("Decrementing keysym ranges aren't supported")
-        for x in range(ord(begin), ord(end)+1):
-            values.append(chr(x))
-        return values
+        # HACK: python doesn't support group name redefinition so we have to use this
+        # ugly hack instead
+        begin = match.group(1) or match.group(3) or match.group(5)
+        end = match.group(2) or match.group(4) or match.group(6)
+        isChar = False
+
+        # convert to their numeric representations
+
+        # if we have numbers, begin and end can have multiple digits
+        if len(begin) > 1 or len(end) > 1:
+            begin = int(begin)
+            end = int(end)
+        else:
+            begin = ord(begin)
+            end = ord(end)
+            isChar = True
+
+        # decrementing range
+        if begin > end:
+            for x in range(end, begin + 1):
+                values.append(x)
+        # incrementing range
+        else:
+            for x in range(begin, end + 1):
+                values.append(x)
+
+        if isChar:
+            return [chr(x) for x in values]
+
+        return [str(x) for x in values]
 
     # single value
     return [variant]
