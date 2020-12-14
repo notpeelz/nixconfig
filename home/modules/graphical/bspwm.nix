@@ -155,13 +155,15 @@ in {
     # TODO: delegate xidlehook options to my.graphical.xidlehook
     # ${pkgs.xidlehook}/bin/xidlehook --timer primary 320 '${pkgs.dm-tool}/bin/dm-tool lock' \'\'
 
-    # Set up window manager
+    # Launch bspwm through the host's displayManager session script
     xsession.windowManager.command = ''
       env > ~/.xsession_env
       chmod 600 ~/.xsession_env
       systemctl --user start bspwm --wait
       rm -f ~/.xsession_env
     '';
+
+    # Window manager service
     systemd.user.services.bspwm = let
       bspc = "${wmPkgs.bspwm}/bin/bspc";
       bspwmrc = pkgs.writeShellScript "bspwmrc" (concatStringsSep "\n" [
@@ -241,8 +243,6 @@ in {
 
         # Misc
         ''
-          # Fix Java GUI issues
-          export _JAVA_AWT_WM_NONREPARENTING=1
           ${bspc} rule -a sun-awt-X11-XDialogPeer state=floating
 
           # Adopt previous windows
@@ -262,6 +262,10 @@ in {
       };
     };
 
+    # Fix Java GUI issues
+    pam.sessionVariables._JAVA_AWT_WM_NONREPARENTING = 1;
+
+    # Make bspc and some env vars available to sxhkd
     my.graphical.services.sxhkd = {
       extraPath = lib.makeBinPath [ wmPkgs.bspwm ];
       envVars = {
