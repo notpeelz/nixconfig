@@ -13,6 +13,8 @@ in {
       direnv
       vscodium
       gdb
+      ghidra-bin
+      mitmproxy
     ];
 
     services.lorri.enable = true;
