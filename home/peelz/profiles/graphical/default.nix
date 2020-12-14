@@ -58,7 +58,11 @@ in {
 
       # Programs
       cool-retro-term
-      chromium firefox
+      (chromium.override (old: {
+        # Enable the VA-API patch for hardware-accelerated video decoding
+        enableVaapi = true;
+      }))
+      firefox
       pavucontrol
       gimp
       inkscape
