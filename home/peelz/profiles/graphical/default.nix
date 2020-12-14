@@ -147,10 +147,10 @@ in {
       "${pkgs.obs-v4l2sink}/share/obs/obs-plugins/v4l2sink";
 
     # Set default browser
-    pam.sessionVariables.BROWSER = "${pkgs.chromium}/bin/chromium";
+    pam.sessionVariables.BROWSER = "chromium";
 
     # Set default terminal
-    pam.sessionVariables.TERMINAL = "${pkgs.kitty}/bin/kitty";
+    pam.sessionVariables.TERMINAL = "kitty";
 
     # Use the Canadian Multilingual Standard layout
     home.keyboard.layout = "ca(multi)";
