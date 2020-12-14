@@ -34,6 +34,9 @@ in {
     extraPath = mkOption {
       type = types.envVar;
       default = "";
+      description = ''
+        Extra entries to be prepended to sxhkd's <envar>PATH</envar>.
+      '';
     };
     hotkeys = mkOption {
       type = types.listOf hotkeySubmodule;
@@ -121,14 +124,17 @@ in {
         Environment = lib.attrValues (lib.mapAttrs
           (k: v: "${k}=${escapeShellArg v}")
           (cfg.envVars // {
-            PATH = makeBinPath [
-              # This is important! If we don't have this, the PATH from
-              # .xsession_env would never get updated when switching
-              # configuration
-              config.home.profileDirectory
-              pkgs.bash
-            ] + (lib.optionalString (cfg.extraPath != "") ":")
-              + "${cfg.extraPath}";
+            PATH = let
+              userPkgs = makeBinPath [
+                # This is important! If we don't have this, the PATH from
+                # .xsession_env would never get updated when switching
+                # configuration
+                config.home.profileDirectory
+                # If the user doesn't have bash in its PATH, supply it for them
+                pkgs.bash
+              ];
+            in "${cfg.extraPath}" + (lib.optionalString (cfg.extraPath != "") ":")
+              + userPkgs;
             # Not technically necessary since we're wrapping every command in
             # a separate bash script... but at least it means we're not
             # implicitly relying on bourne shell.
