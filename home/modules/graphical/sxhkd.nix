@@ -42,6 +42,10 @@ in {
       type = types.listOf hotkeySubmodule;
       default = [];
     };
+    suppressScriptLogs = mkOption {
+      type = types.bool;
+      default = true;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -103,7 +107,9 @@ in {
               # indentation
               echo -n '  ' >> $out/sxhkdrc
               # script to execute
-              echo "$PWD/$f" >> $out/sxhkdrc
+              echo "${if cfg.suppressScriptLogs
+                then "$PWD/$f &>/dev/null & disown"
+                else "$PWD/$f"}" >> $out/sxhkdrc
               echo >> $out/sxhkdrc
             done
           done

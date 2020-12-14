@@ -19,6 +19,7 @@ with lib;
       spectacle
       rofi
     ]);
+    suppressScriptLogs = false; # set to true to debug
     hotkeys = let
       headsetSink = "alsa_output.usb-Kingston_HyperX_Cloud_Flight_Wireless_Headset-00.iec958-stereo";
       browserIncognitoParam = "--incognito";
