@@ -19,12 +19,12 @@
   boot.extraModulePackages = with config.boot.kernelPackages; [
     r8125
   ];
-  my.kernel.pkgOverlays = [
-    (final: super: {
-      # NixOS 20.03: use the r8125 kmod package from unstable
-      r8125 = (pkgs.pkgs-unstable.linuxPackagesFor super.kernel).r8125;
-    })
-  ];
+  # Kernel pkg overlays
+  # my.kernel.pkgOverlays = [
+  #   (final: super: {
+  #     r8125 = (pkgs.linuxPackagesFor super.kernel).r8125;
+  #   })
+  # ];
 
   # Root (LVM partition)
   fileSystems."/" = {
