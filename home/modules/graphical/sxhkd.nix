@@ -26,7 +26,7 @@ in {
     envVars = mkOption {
       type = types.attrs;
       internal = true;
-      default = {};
+      default = config.pam.sessionVariables;
       description = ''
         Environment variables passed to sxhkd and its config.
       '';

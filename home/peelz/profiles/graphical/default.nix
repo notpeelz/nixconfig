@@ -6,7 +6,7 @@ let
 in {
   imports = [
     ./nvidia.nix
-    ./hotkeys.nix
+    ./hotkeys
     ../../../modules/graphical/xorg.nix
     ../../../modules/graphical/bspwm.nix
     ../../../modules/graphical/sxhkd.nix
