@@ -13,26 +13,27 @@ with lib;
     };
 
     my.graphical.services.sxhkd = mkIf config.my.graphical.enable {
-      extraPath = makeBinPath (with pkgs; [
-        gnugrep
-        dconf
-        pulseaudio
-        alsaUtils
-        playerctl
-        paprop
-      ]);
-      hotkeys = [
+      hotkeys = let
+        grep = "${pkgs.gnugrep}/bin/grep";
+        sed = "${pkgs.gnused}/bin/sed";
+        dconf = "${pkgs.dconf}/bin/dconf";
+        pactl = "${pkgs.pulseaudio}/bin/pactl";
+        paplay = "${pkgs.pulseaudio}/bin/paplay";
+        paprop = "${pkgs.paprop}/bin/paprop";
+        amixer = "${pkgs.alsaUtils}/bin/amixer";
+        playerctl = "${pkgs.playerctl}/bin/playerctl";
+      in [
         # Volume control
         {
           hotkey = "{XF86AudioLowerVolume,XF86AudioRaiseVolume}";
           cmd = ''
-            sink="$(dconf read /com/peelz/audio/headset_sink | sed -e "s/^'//" -e "s/'$//")"
+            sink="$(${dconf} read /com/peelz/audio/headset_sink | ${sed} -e "s/^'//" -e "s/'$//")"
             # control the volume through
-            pactl set-sink-volume "$sink" {-,+}5%
-            id="$(paprop get-prop sink "$sink" alsa.card)"
+            ${pactl} set-sink-volume "$sink" {-,+}5%
+            id="$(${paprop} get-prop sink "$sink" alsa.card)"
             # fight with the ALSA driver to enforce a constant volume
-            amixer -c "$id" cset numid=6 49
-            amixer -c "$id" cset numid=6 50
+            ${amixer} -c "$id" cset numid=6 49
+            ${amixer} -c "$id" cset numid=6 50
           '';
         }
 
@@ -40,34 +41,34 @@ with lib;
         {
           hotkey = "XF86AudioMute";
           cmd = ''
-            sink="$(dconf read /com/peelz/audio/headset_sink)"
-            pactl set-sink-mute "$sink" toggle
+            sink="$(${dconf} read /com/peelz/audio/headset_sink)"
+            ${pactl} set-sink-mute "$sink" toggle
           '';
         }
 
         # Play/pause through MPRIS
         {
           hotkey = "XF86Audio{Stop,Prev,Play,Next}";
-          cmd = "playerctl -i vlc {stop,previous,play-pause,next}";
+          cmd = "${playerctl} -i vlc {stop,previous,play-pause,next}";
         }
 
         # Mute microphone
         {
           hotkey = "{hyper + m,button8}";
           cmd = ''
-            sink="$(dconf read /com/peelz/audio/headset_sink | sed -e "s/^'//" -e "s/'$//")"
-            src="$(dconf read /com/peelz/audio/mic_source | sed -e "s/^'//" -e "s/'$//")"
-            volume="$(dconf read /com/peelz/audio/notification_volume)"
-            is_muted="$(paprop is-muted source "$src")"
+            sink="$(${dconf} read /com/peelz/audio/headset_sink | ${sed} -e "s/^'//" -e "s/'$//")"
+            src="$(${dconf} read /com/peelz/audio/mic_source | ${sed} -e "s/^'//" -e "s/'$//")"
+            volume="$(${dconf} read /com/peelz/audio/notification_volume)"
+            is_muted="$(${paprop} is-muted source "$src")"
             if [[ "$is_muted" == "1" ]]; then
-              pactl set-source-mute "$src" false
-              paplay ${./mic_activated.wav} \
+              ${pactl} set-source-mute "$src" false
+              ${paplay} ${./mic_activated.wav} \
                 --device "$sink" \
                 --volume "$volume" &
               echo 'Microphone unmuted'
             else
-              pactl set-source-mute "$src" true
-              paplay ${./mic_muted.wav} \
+              ${pactl} set-source-mute "$src" true
+              ${paplay} ${./mic_muted.wav} \
                 --device "$sink" \
                 --volume "$volume" &
               echo 'Microphone muted'

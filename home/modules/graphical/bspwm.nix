@@ -267,7 +267,6 @@ in {
 
     # Make bspc and some env vars available to sxhkd
     my.graphical.services.sxhkd = {
-      extraPath = lib.makeBinPath [ wmPkgs.bspwm ];
       envVars = {
         BSPWM_GAP = cfg.window_gap;
       };

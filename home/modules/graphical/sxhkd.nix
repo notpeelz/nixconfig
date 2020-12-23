@@ -31,13 +31,6 @@ in {
         Environment variables passed to sxhkd and its config.
       '';
     };
-    extraPath = mkOption {
-      type = types.envVar;
-      default = "";
-      description = ''
-        Extra entries to be prepended to sxhkd's <envar>PATH</envar>.
-      '';
-    };
     hotkeys = mkOption {
       type = types.listOf hotkeySubmodule;
       default = [];
@@ -108,8 +101,8 @@ in {
               echo -n '  ' >> $out/sxhkdrc
               # script to execute
               echo "${if cfg.suppressScriptLogs
-                then "$PWD/$f &>/dev/null & disown"
-                else "$PWD/$f"}" >> $out/sxhkdrc
+                then "${pkgs.bash}/bin/bash $PWD/$f &>/dev/null & disown"
+                else "${pkgs.bash}/bin/bash $PWD/$f"}" >> $out/sxhkdrc
               echo >> $out/sxhkdrc
             done
           done
@@ -130,17 +123,6 @@ in {
         Environment = lib.attrValues (lib.mapAttrs
           (k: v: "${k}=${escapeShellArg v}")
           (cfg.envVars // {
-            PATH = let
-              userPkgs = makeBinPath [
-                # This is important! If we don't have this, the PATH from
-                # .xsession_env would never get updated when switching
-                # configuration
-                config.home.profileDirectory
-                # If the user doesn't have bash in its PATH, supply it for them
-                pkgs.bash
-              ];
-            in "${cfg.extraPath}" + (lib.optionalString (cfg.extraPath != "") ":")
-              + userPkgs;
             # Not technically necessary since we're wrapping every command in
             # a separate bash script... but at least it means we're not
             # implicitly relying on bourne shell.
