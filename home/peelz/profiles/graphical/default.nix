@@ -86,6 +86,7 @@ in {
       gnome3.nautilus
       gnome3.gnome-system-monitor
       gnome3.file-roller
+      gnome3.dconf-editor
 
       # Fonts
       (nerdfonts.override (old: {
