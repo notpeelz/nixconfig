@@ -11,7 +11,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       direnv
-      vscodium
+      vscode
       gdb
       ghidra-bin
       mitmproxy
