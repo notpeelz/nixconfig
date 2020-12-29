@@ -35,7 +35,7 @@ in {
 
     # Misc
     # TODO: remove some of these once dotfiles are fully integrated
-    nmap
+    (if config.my.graphical.enable then nmap_graphical else nmap)
     sshfs
     wol
     stress
