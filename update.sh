@@ -66,8 +66,8 @@ for f in "$host/sources/"*.nix; do
 
   sed -i "s/url = \"$sed_oldurl\";/url = \"$sed_newurl\";/" "$f"
   sed -i "s/sha256 = \".*\";/sha256 = \"$sha256\";/" "$f"
-  echo "Updated rev to: $latest_rev"
-  echo "Update hash to: $sha256"
+  echo "Updated rev to $latest_rev"
+  echo "Updated hash to $sha256"
 
   echo
 done
