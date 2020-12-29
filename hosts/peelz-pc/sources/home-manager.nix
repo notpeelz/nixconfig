@@ -1,6 +1,6 @@
 # remote https://github.com/nix-community/home-manager
 # branch release-20.09
 fetchTarball {
-  url = "https://github.com/nix-community/home-manager/archive/63f299b3347aea183fc5088e4d6c4a193b334a41.tar.gz";
-  sha256 = "0iksjch94wfvyq0cgwv5wq52j0dc9cavm68wka3pahhdvjlxd3js";
+  url = "https://github.com/nix-community/home-manager/archive/22f6736e628958f05222ddaadd7df7818fe8f59d.tar.gz";
+  sha256 = "1j4hyjd3kgvwym5jjazzyn554ngrm05ca9wl1a7z1bid22asr99p";
 }
