@@ -11,7 +11,14 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       direnv
-      vscode
+      (vscode.overrideAttrs ({ buildInputs ? [], installPhase, ... }: {
+        buildInputs = buildInputs ++ [ pkgs.makeWrapper ];
+        # Add mono to PATH for ilspy-vscode
+        installPhase = installPhase + ''
+          wrapProgram $out/bin/code \
+            --prefix PATH : "${stdenv.lib.makeBinPath [ pkgs.mono ]}"
+        '';
+      }))
       (symlinkJoin {
         name = "gdb-custom";
         paths = [
