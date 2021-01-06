@@ -10,6 +10,8 @@ with lib;
       mic_source = "alsa_input.usb-Focusrite_Scarlett_Solo_USB-00.iec958-stereo";
       headset_mic_source = "alsa_input.usb-Kingston_HyperX_Cloud_Flight_Wireless_Headset-00.mono-fallback";
       notification_volume = 30000;
+      # control id for 'PCM Playback Volume'
+      volume_control_id = 6;
     };
 
     my.graphical.services.sxhkd = mkIf config.my.graphical.enable {
@@ -32,8 +34,9 @@ with lib;
             ${pactl} set-sink-volume "$sink" {-,+}5%
             id="$(${paprop} get-prop sink "$sink" alsa.card)"
             # fight with the ALSA driver to enforce a constant volume
-            ${amixer} -c "$id" cset numid=6 49
-            ${amixer} -c "$id" cset numid=6 50
+            control_id="$(${dconf} read /com/peelz/audio/volume_control_id)"
+            ${amixer} -c "$id" cset numid="$control_id" 49
+            ${amixer} -c "$id" cset numid="$control_id" 50
           '';
         }
 
